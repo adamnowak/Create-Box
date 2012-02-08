@@ -1,0 +1,33 @@
+﻿<Window x:Class="BoxCreator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="600" Width="800">
+    <Grid x:Name="LayoutRoot" Background="Green">
+        
+        <Grid.RowDefinitions>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <!--Definiujemy, ze grid LayoutRoot ma miec 2 kolumny (w tym pierwsza kolumna ma miec 200 px-->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0">
+            <Button Name="Open">Open</Button>
+            <Button Name="Save">Save</Button>
+            <Label>Length</Label>
+            <TextBox Name="Length" Margin="10,0,0,0">20</TextBox>
+            <Label>Width</Label>
+            <TextBox Name="Width">30</TextBox>
+            <Label Margin="10,0,0,0">Heigth</Label>
+            <TextBox Margin="10" Name="Heigth">25</TextBox>
+            <Button Margin="10" Name="Reset" Click="Reset_Click">Reset</Button>
+            <Button Margin="20" Name="Preview" Click="Preview_Click">3D Preview</Button>
+        </StackPanel>
+        <Canvas Grid.Column="1" Background="Gray" Name="Table">
+            <!--<Canvas Height="20" Width="30" Background="Green"></Canvas>-->
+        </Canvas>
+    </Grid>
+    
+</Window>
