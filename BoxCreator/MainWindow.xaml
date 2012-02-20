@@ -22,6 +22,9 @@
             <TextBox Name="Width">30</TextBox>
             <Label Margin="10,0,0,0">Heigth</Label>
             <TextBox Margin="10" Name="Heigth">25</TextBox>
+            <CheckBox Name="cbWithCover" IsChecked="False">With cover</CheckBox>
+            <Label Margin="10,0,0,0">Cover Height</Label>
+            <TextBox Margin="10" Name="CoverHeight" IsEnabled="{Binding ElementName=cbWithCover, Path=IsChecked}">25</TextBox>
             <Button Margin="10" Name="Reset" Click="Reset_Click">Reset</Button>
             <Button Margin="20" Name="Preview" Click="Preview_Click">3D Preview</Button>
         </StackPanel>
