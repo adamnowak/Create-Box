@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Xml;
 
 namespace BoxCreator
 {
@@ -69,18 +70,18 @@ namespace BoxCreator
 
       Scale = GetScale(realWidth, realLength, realHeight, realCoverHeight); //TODO: mainCanvasHeigth, mainCanvasWidth
 
-      UpWall = new Wall(GetSizeToDisplay(RealLength), GetSizeToDisplay(RealWidth), UpWallColor, WallType.Up);
-      BackWall = new Wall(GetSizeToDisplay(RealLength), GetSizeToDisplay(RealHeight), BackWallColor, WallType.Back);
-      BottomWall = new Wall(GetSizeToDisplay(RealLength), GetSizeToDisplay(RealWidth), BottomWallColor, WallType.Bottom);
-      FrontWall = new Wall(GetSizeToDisplay(RealLength), GetSizeToDisplay(RealHeight), FrontWallColor, WallType.Front);
-      LeftWall = new Wall(GetSizeToDisplay(RealHeight), GetSizeToDisplay(RealWidth), LeftWallColor, WallType.Left);
-      RightWall = new Wall(GetSizeToDisplay(RealHeight), GetSizeToDisplay(RealWidth), RightWallColor, WallType.Right);
+      UpWall = new Wall(GetSizeToDisplay(RealLength), GetSizeToDisplay(RealWidth), UpWallColor, WallType.WallTypeEnum.Up);
+      BackWall = new Wall(GetSizeToDisplay(RealLength), GetSizeToDisplay(RealHeight), BackWallColor, WallType.WallTypeEnum.Back);
+      BottomWall = new Wall(GetSizeToDisplay(RealLength), GetSizeToDisplay(RealWidth), BottomWallColor, WallType.WallTypeEnum.Bottom);
+      FrontWall = new Wall(GetSizeToDisplay(RealLength), GetSizeToDisplay(RealHeight), FrontWallColor, WallType.WallTypeEnum.Front);
+      LeftWall = new Wall(GetSizeToDisplay(RealHeight), GetSizeToDisplay(RealWidth), LeftWallColor, WallType.WallTypeEnum.Left);
+      RightWall = new Wall(GetSizeToDisplay(RealHeight), GetSizeToDisplay(RealWidth), RightWallColor, WallType.WallTypeEnum.Right);
 
-      CoverWall = new Wall(GetSizeToDisplay(RealHeight), GetSizeToDisplay(RealWidth), CoverWallColor, WallType.Cover);
-      BackCoverWall = new Wall(GetSizeToDisplay(RealHeight), GetSizeToDisplay(RealWidth), BackCoverWallColor, WallType.BackCover);
-      FrontCoverWall = new Wall(GetSizeToDisplay(RealHeight), GetSizeToDisplay(RealWidth), FrontCoverWallColor, WallType.FrontCover);
-      LeftCoverWall = new Wall(GetSizeToDisplay(RealHeight), GetSizeToDisplay(RealWidth), LeftCoverWallColor, WallType.LeftCover);
-      RightCoverWall = new Wall(GetSizeToDisplay(RealHeight), GetSizeToDisplay(RealWidth), RightCoverWallColor, WallType.RightCover);
+      CoverWall = new Wall(GetSizeToDisplay(RealHeight), GetSizeToDisplay(RealWidth), CoverWallColor, WallType.WallTypeEnum.Cover);
+      BackCoverWall = new Wall(GetSizeToDisplay(RealHeight), GetSizeToDisplay(RealWidth), BackCoverWallColor, WallType.WallTypeEnum.BackCover);
+      FrontCoverWall = new Wall(GetSizeToDisplay(RealHeight), GetSizeToDisplay(RealWidth), FrontCoverWallColor, WallType.WallTypeEnum.FrontCover);
+      LeftCoverWall = new Wall(GetSizeToDisplay(RealHeight), GetSizeToDisplay(RealWidth), LeftCoverWallColor, WallType.WallTypeEnum.LeftCover);
+      RightCoverWall = new Wall(GetSizeToDisplay(RealHeight), GetSizeToDisplay(RealWidth), RightCoverWallColor, WallType.WallTypeEnum.RightCover);
 
       //calculation for displaying on the center the canvas
       int lengthToDisplay = (int)(2 * EdgeGap + 2 * WallGap + GetSizeToDisplay(2 * RealHeight + RealLength));
@@ -135,10 +136,10 @@ namespace BoxCreator
 
     private void AddWall(Wall upWall, int top, int left)
     {
-      BoxCanvas.Children.Add(upWall.WallCanvas);
-      Canvas.SetLeft(upWall.WallCanvas, left);
-      Canvas.SetTop(upWall.WallCanvas, top);
-      upWall.WallCanvas.MouseLeftButtonDown += WallMouseButtonEventHandler;
+      BoxCanvas.Children.Add(upWall);
+      Canvas.SetLeft(upWall, left);
+      Canvas.SetTop(upWall, top);
+      upWall.MouseLeftButtonDown += WallMouseButtonEventHandler;
      
     }
 
@@ -298,6 +299,57 @@ namespace BoxCreator
       }
 
       return scale;
+    }
+
+    public void Save(string path)
+    {
+      XmlDocument doc = new XmlDocument();
+      XmlElement boxXmlElement = doc.CreateElement("Box");
+      boxXmlElement.SetAttribute("RealWidth", RealWidth.ToString());
+      boxXmlElement.SetAttribute("RealLength", RealLength.ToString());
+      boxXmlElement.SetAttribute("RealHeight", RealHeight.ToString());
+      boxXmlElement.SetAttribute("RealCoverHeight", RealCoverHeight.ToString());
+      doc.AppendChild(boxXmlElement);
+      
+      if (IsWithCover)
+      {
+        CoverWall.Save(doc, boxXmlElement);
+        LeftCoverWall.Save(doc, boxXmlElement);
+        BackCoverWall.Save(doc, boxXmlElement);
+        FrontCoverWall.Save(doc, boxXmlElement);
+        RightCoverWall.Save(doc, boxXmlElement);
+      }
+      else
+      {
+        UpWall.Save(doc, boxXmlElement);
+      }
+      BottomWall.Save(doc, boxXmlElement);
+      FrontWall.Save(doc, boxXmlElement);
+      BackWall.Save(doc, boxXmlElement);
+      LeftWall.Save(doc, boxXmlElement);
+      RightWall.Save(doc, boxXmlElement);
+      
+      doc.Save(path);
+    }
+
+    public void Load(Canvas canvasToDisplay, string path)
+    {
+      XmlDocument doc = new XmlDocument();
+      doc.Load(path);
+      if (doc.DocumentElement != null && doc.DocumentElement.Name == "Box")
+      {
+        XmlElement boxXmlElement = doc.DocumentElement;
+        int realWidth = int.Parse(boxXmlElement.GetAttribute("RealWidth"));
+        int realLength = int.Parse(boxXmlElement.GetAttribute("RealLength"));
+        int realHeight = int.Parse(boxXmlElement.GetAttribute("RealHeight"));
+        int realCoverHeight = int.Parse(boxXmlElement.GetAttribute("RealCoverHeight"));
+        Rebuild(canvasToDisplay, realWidth, realLength, realHeight, realCoverHeight, 550, 550);
+
+        foreach (XmlElement xmlWallElement in boxXmlElement.ChildNodes)
+        {
+          
+        }
+      }
     }
   }
 }

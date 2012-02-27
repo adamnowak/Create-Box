@@ -55,6 +55,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddElementWindow.xaml.cs">
+      <DependentUpon>AddElementWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Box.cs" />
     <Compile Include="WallType.cs" />
     <Compile Include="Wall.cs" />
@@ -64,6 +67,10 @@
     <Compile Include="SketchWindow.xaml.cs">
       <DependentUpon>SketchWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="AddElementWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ThreeDPreviewWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

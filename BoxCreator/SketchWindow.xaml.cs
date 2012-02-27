@@ -18,257 +18,144 @@ namespace BoxCreator
   /// </summary>
   public partial class SketchWindow : Window
   {
+    private Point clickPosition;
+    private bool isMouseDown = false;
+
     public SketchWindow()
     {
       InitializeComponent();
     }
 
 
-
-    public class Kontroler
+    public void AddItemToSelectedElementClick(object sender, RoutedEventArgs e)
     {
-
-      private static RotateTransform rotacja;
-      private static TranslateTransform translacja;
-      private static ScaleTransform skala;
-      private static FrameworkElement lastselected = null;
-
-      static public void Dolacz_Uklad(FrameworkElement elem)
+      AddElementWindow addElementWindow = new AddElementWindow();
+      addElementWindow.ShowDialog();
+      FrameworkElement elem = addElementWindow.Element;
+      if (elem != null)
       {
-        TransformGroup tg = new TransformGroup();
-        ScaleTransform sc = new ScaleTransform();
-        tg.Children.Add(sc);
-        RotateTransform rt = new RotateTransform();
-        tg.Children.Add(rt);
-        TranslateTransform tt = new TranslateTransform();
-        tg.Children.Add(tt);
-        elem.RenderTransform = tg;
+         WallToEdit.AddTransformationsToElement(elem);
+        elem.MouseLeftButtonDown += SelectElementToEdit;
+        elem.MouseMove += MoveMouse;
+        elem.MouseLeftButtonUp += UnselectElementToEdit;
+        editableCanvas.Children.Add(elem);
       }
 
-      public static void CleanTransforms()
-      {
-        if (lastselected != null)
-        {
-          lastselected.Opacity = 1.0;
-          lastselected = null;
-        }
-        rotacja = null;
-        translacja = null;
-        skala = null;
-      }
-      public static void RegisterElementTransforms(UIElement elem)
-      {
-        CleanTransforms();
-        if (elem != null && elem.RenderTransform is TransformGroup)
-        {
-          if (elem is FrameworkElement)
-          {
-            lastselected = elem as FrameworkElement;
-            lastselected.Opacity = 0.75;
-          }
-          TransformGroup tg = elem.RenderTransform as TransformGroup;
-          foreach (Transform tran in tg.Children)
-          {
-            if (tran is TranslateTransform) translacja = tran as TranslateTransform;
-            if (tran is RotateTransform) rotacja = tran as RotateTransform;
-            if (tran is ScaleTransform) skala = tran as ScaleTransform;
-          }
-        }
-      }
-      public static void PrzesunLewo()
-      {
-        if (translacja != null)
-          translacja.X -= 1;
-      }
-      public static void PrzesunPrawo()
-      {
-        if (translacja != null)
-          translacja.X += 1;
-      }
-      public static void PrzesunDol()
-      {
-        if (translacja != null)
-          translacja.Y += 1;
-      }
-      public static void PrzesunGora()
-      {
-        if (translacja != null)
-          translacja.Y -= 1;
-      }
-
-      public static void ObrocLewo()
-      {
-        if (rotacja != null)
-          rotacja.Angle -= 1;
-      }
-      public static void ObrocPrawo()
-      {
-        if (rotacja != null)
-          rotacja.Angle += 1;
-      }
-      public static void Powieksz()
-      {
-        if (skala != null)
-        {
-          skala.ScaleX += 0.01;
-          skala.ScaleY += 0.01;
-        }
-      }
-      public static void Pomniejsz()
-      {
-        if (skala != null)
-        {
-          skala.ScaleX -= 0.01;
-          skala.ScaleY -= 0.01;
-        }
-      }
-      public static void AddElementPosition(Point p)
-      {
-        if (translacja != null)
-        {
-          translacja.X += p.X;
-          translacja.Y += p.Y;
-        }
-      }
+      //FrameworkElement elem = null;
+      //Random rd = new Random();
+      ////zawsze tekst tymczasowo
+      //if (rd.Next() % 2 == 0)
+      //{
+      //  Image img = new Image();
+      //  ImageSourceConverter converter = new ImageSourceConverter();
+      //  img.Source = (ImageSource)converter.ConvertFromString("test.png");
+      //  img.Width = 60;
+      //  img.Height = 30;
+      //  elem = img;
+      //}
+      //else
+      //{
+      //  TextBlock tb = new TextBlock();
+      //  tb.Text = "test";
+      //  elem = tb;
+      //}
+     
     }
 
-    public void DodajElementClick(object sender, RoutedEventArgs e)
+    
+    private void SelectElementToEdit(object sender, MouseButtonEventArgs e)
     {
-      FrameworkElement elem = null;
-      Random rd = new Random();
-      //zawsze tekst tymczasowo
-      if (false)//rd.Next() % 2 == 0)
-      {
-        Image img = new Image();
-        ImageSourceConverter converter = new ImageSourceConverter();
-        img.Source = (ImageSource)converter.ConvertFromString("test.jpg");
-        img.Width = 60;
-        img.Height = 30;
-        elem = img;
-      }
-      else
-      {
-        TextBlock tb = new TextBlock();
-        tb.Text = "test";
-        elem = tb;
-      }
-      Kontroler.Dolacz_Uklad(elem);
-      elem.MouseLeftButtonDown += WybranoElement;
-      elem.MouseMove += RuchMyszy;
-      elem.MouseLeftButtonUp += KoniecEdycji;
-      kartka.Children.Add(elem);
-    }
-
-    private Point pozycja;
-    private bool isMouseDown = false;
-    private void WybranoElement(object sender, MouseButtonEventArgs e)
-    {
-      Kontroler.RegisterElementTransforms(e.OriginalSource as UIElement);
-      pozycja = e.GetPosition(kartka);
+      WallToEdit.RegisterTransformsElement(e.OriginalSource as UIElement);
+      clickPosition = e.GetPosition(editableCanvas);
       isMouseDown = true;
     }
-    private void KoniecEdycji(object sender, MouseButtonEventArgs e)
+    private void UnselectElementToEdit(object sender, MouseButtonEventArgs e)
     {
       isMouseDown = false;
     }
-    private void RuchMyszy(object sender, MouseEventArgs e)
+    private void MoveMouse(object sender, MouseEventArgs e)
     {
       if (isMouseDown)
       {
-        Point mousePos = e.GetPosition(kartka);
-        Point delta = new Point(mousePos.X - pozycja.X, mousePos.Y - pozycja.Y);
-        Kontroler.AddElementPosition(delta);
-        pozycja = mousePos;
+        Point mousePos = e.GetPosition(editableCanvas);
+        Point delta = new Point(mousePos.X - clickPosition.X, mousePos.Y - clickPosition.Y);
+        WallToEdit.ChangeEditedElementPosition(delta);
+        clickPosition = mousePos;
       }
     }
 
-    private void PrzesunGora(object sender, RoutedEventArgs e)
+    private void MoveUp(object sender, RoutedEventArgs e)
     {
-      Kontroler.PrzesunGora();
+      WallToEdit.MoveEditedElementUp();
     }
 
-    private void PrzesunDol(object sender, RoutedEventArgs e)
+    private void MoveDown(object sender, RoutedEventArgs e)
     {
-      Kontroler.PrzesunDol();
+      WallToEdit.MoveEditedElementDown();
     }
 
-    private void PrzesunLewo(object sender, RoutedEventArgs e)
+    private void MoveLeft(object sender, RoutedEventArgs e)
     {
-      Kontroler.PrzesunLewo();
+      WallToEdit.MoveEditedElementLeft();
     }
 
-    private void PrzesunPrawo(object sender, RoutedEventArgs e)
+    private void MoveRight(object sender, RoutedEventArgs e)
     {
-      Kontroler.PrzesunPrawo();
+      WallToEdit.MoveEditedElementRight();
     }
 
-    private void ObtotLewo(object sender, RoutedEventArgs e)
+    private void TurnLeft(object sender, RoutedEventArgs e)
     {
-      Kontroler.ObrocLewo();
+      WallToEdit.TurnEditedElementLeft();
     }
 
-    private void ObrotPrawo(object sender, RoutedEventArgs e)
+    private void TurnRight(object sender, RoutedEventArgs e)
     {
-      Kontroler.ObrocPrawo();
+      WallToEdit.TurnEditedElementRight();
     }
 
-    private void Powieksz(object sender, RoutedEventArgs e)
+    private void Enlarge(object sender, RoutedEventArgs e)
     {
-      Kontroler.Powieksz();
+      WallToEdit.EnlargeEditedElement();
     }
 
-    private void Pomniejsz(object sender, RoutedEventArgs e)
+    private void Shrink(object sender, RoutedEventArgs e)
     {
-      Kontroler.Pomniejsz();
+      WallToEdit.ShrinkEditedElement();
     }
 
+    /// <summary>
+    /// Handles the Closing event of the Window control.
+    /// </summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">The <see cref="System.ComponentModel.CancelEventArgs"/> instance containing the event data.</param>
     private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
     {
-      MoveChildren(kartka, boxWall);
-      boxWall.Background = kartka.Background;
+      Wall.CopyCanvases(editableCanvas, _wallToEdit);      
     }
 
-    private void MoveChildren(Canvas from, Canvas to, bool withSize = false)
+    private Wall _wallToEdit;
+    /// <summary>
+    /// Gets or sets the wall which will be displayed on sketch window. This wall can be modified.
+    /// </summary>
+    /// <value>
+    /// The wall to edit.
+    /// </value>
+    public Wall WallToEdit
     {
-      if (withSize)
-      {
-        to.Height = from.Height;
-        to.Width = from.Width;
-      }
-      to.Children.Clear();
-      List<UIElement> col = new List<UIElement>();
-      foreach (UIElement ele in from.Children)
-      {
-        col.Add(ele);
-      }
-      from.Children.Clear();
-      foreach (UIElement ele in col)
-      {
-        //                kartka.Children.Remove(ele);
-        to.Children.Add(ele);
-      }
-    }
-    private Canvas boxWall;
-    public Canvas BoxWall
-    {
-      get { return boxWall; }
+      get { return _wallToEdit; }
 
       set
       {
-        boxWall = value;
-        MoveChildren(boxWall, kartka, true);
-        
-        kartka.Background = boxWall.Background;
-
-        kartka.RenderTransform = new ScaleTransform();
-        {
-          ((ScaleTransform)kartka.RenderTransform).ScaleX = 2;
-          ((ScaleTransform)kartka.RenderTransform).ScaleY = 2;
-        }
-
-        kartka.SetValue(Canvas.LeftProperty, 10.0);
-        kartka.SetValue(Canvas.TopProperty, 10.0);
+        _wallToEdit = value;
+        Wall.CopyCanvases(_wallToEdit, editableCanvas, true);
+        Title = Title + " - edited wall (" + WallType.WallTypeEnumToString(_wallToEdit.WallType) +")";
       }
+    }
+
+    private void OkClick(object sender, RoutedEventArgs e)
+    {
+      Close();
     }
   }
 }

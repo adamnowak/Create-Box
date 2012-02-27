@@ -74,15 +74,15 @@ namespace BoxCreator
       int coverHeight = 0;
       int tableSize = 550;
 
-      if (!GetParsedDimension(Width.Text, Width.Name, out width))
+      if (!GetParsedDimension(widthTextBox.Text, widthTextBox.Name, out width))
         return;
-      if (!GetParsedDimension(Length.Text, Length.Name, out length))
+      if (!GetParsedDimension(lengthTextBox.Text, lengthTextBox.Name, out length))
         return;
-      if (!GetParsedDimension(Heigth.Text, Heigth.Name, out height))
+      if (!GetParsedDimension(heigthTextBox.Text, heigthTextBox.Name, out height))
         return;
       if (cbWithCover.IsChecked.HasValue && 
         cbWithCover.IsChecked.Value &&
-        !GetParsedDimension(CoverHeight.Text, CoverHeight.Name, out coverHeight))
+        !GetParsedDimension(coverHeightTextBox.Text, coverHeightTextBox.Name, out coverHeight))
         return;
       if (coverHeight > height)
       {
@@ -97,11 +97,33 @@ namespace BoxCreator
 
     void boxWall_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-      SketchWindow sketch = new SketchWindow();
-      sketch.BoxWall = (Canvas)sender;
-      sketch.ShowDialog();
+      Wall wallToDisplay = sender as Wall;
+      if (wallToDisplay != null)
+      {
+        SketchWindow sketch = new SketchWindow();
+        //box.BoxCanvas.Children.Remove(wallToDisplay);
+        sketch.WallToEdit = wallToDisplay;
+        sketch.ShowDialog();
+        //box.BoxCanvas.Children.Add(wallToDisplay);
+      }
     }
 
+    private void SaveClick(object sender, RoutedEventArgs e)
+    {
+      box.Save("test.xml");
+    }
 
+    private void OpenClick(object sender, RoutedEventArgs e)
+    {
+      box.WallMouseButtonEventHandler = boxWall_MouseLeftButtonDown;
+      box.Load(Table, "test.xml");
+      box.Show();
+
+      widthTextBox.Text = box.RealWidth.ToString();
+      lengthTextBox.Text = box.RealLength.ToString();
+      heigthTextBox.Text = box.RealHeight.ToString();
+      coverHeightTextBox.Text = box.RealCoverHeight.ToString();
+
+    }
   }
 }

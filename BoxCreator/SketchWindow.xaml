@@ -18,43 +18,43 @@
         StackPanel to kontrolka ktora 'trzyma' swoje dzieci jeden za/pod drugim-->
         <StackPanel x:Name="LeftPanel" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Height="Auto">
             <!--Do LeftPanel dodajemy button, ktorego opis bedzie Dodaj, a na jego klikniecie wywola sie metoda Button_Click-->
-            <Button Margin="10 10 10 10" Click="DodajElementClick">Dodaj</Button>
+            <Button Margin="10 10 10 10" Click="AddItemToSelectedElementClick">Dodaj</Button>
             <!--Kolejnym elementem w LeftPanel bedzie TextBlock (kontrolka wypisujaca text), ktora wypisze Pozycja:-->
             <TextBlock>Pozycja:</TextBlock>
             <!--Trzecim elementem w LeftPanel bedzie StackPanel ktory bedzie 'trzymal/wyswietlal' swoje dzieci poziomo (domyslnie pionowo)-->
             <StackPanel Orientation="Horizontal" >
                 <!--Ten StackPanel wyswietli 2 repeatbuttony (przycisk ktory wywola metode Click wiecej niz 1 raz jesli przytrzymamy przycisk dluzej) gora i dol-->
-                <RepeatButton Width="65" Height="65" Click="PrzesunGora" Margin="5 0 5 5">Góra
+                <RepeatButton Width="65" Height="65" Click="MoveUp" Margin="5 0 5 5">Góra
                 </RepeatButton>
-                <RepeatButton Width="65" Height="65" Click="PrzesunDol" Margin="5 0 5 5">Dół
+                <RepeatButton Width="65" Height="65" Click="MoveDown" Margin="5 0 5 5">Dół
                 </RepeatButton>
             </StackPanel>
             <!--Czwartym elementem w LeftPanel bedzie StackPanel ktory bedzie 'trzymal/wyswietlal' swoje dzieci poziomo (domyslnie pionowo)-->
             <StackPanel Orientation="Horizontal" >
                 <!--Ten StackPanel wyswietli 2 repeatbuttony (przycisk ktory wywola metode Click wiecej niz 1 raz jesli przytrzymamy przycisk dluzej) lewo i prawo-->
-                <RepeatButton Width="65" Height="65" Click="PrzesunLewo"  Margin="5 0 5 5">Lewo
+                <RepeatButton Width="65" Height="65" Click="MoveLeft"  Margin="5 0 5 5">Lewo
                 </RepeatButton>
-                <RepeatButton Width="65" Height="65" Click="PrzesunPrawo" Margin="5 0 5 5">Prawo
+                <RepeatButton Width="65" Height="65" Click="MoveRight" Margin="5 0 5 5">Prawo
                 </RepeatButton>
             </StackPanel>
 
             <TextBlock>Obrót:
             </TextBlock>
             <StackPanel Orientation="Horizontal" >
-                <RepeatButton Width="65" Height="65" Click="ObtotLewo" Margin="5 0 5 5">Lewo
+                <RepeatButton Width="65" Height="65" Click="TurnLeft" Margin="5 0 5 5">Lewo
                 </RepeatButton>
-                <RepeatButton Width="65" Height="65" Click="ObrotPrawo" Margin="5 0 5 5">Prawo
+                <RepeatButton Width="65" Height="65" Click="TurnRight" Margin="5 0 5 5">Prawo
                 </RepeatButton>
             </StackPanel>
             <TextBlock>Skala:
             </TextBlock>
             <StackPanel Orientation="Horizontal" >
-                <RepeatButton Width="65" Height="65" Click="Powieksz" Margin="5 0 5 5">Powiększ
+                <RepeatButton Width="65" Height="65" Click="Enlarge" Margin="5 0 5 5">Powiększ
                 </RepeatButton>
-                <RepeatButton Width="65" Height="65" Click="Pomniejsz" Margin="5 0 5 5">Zmniejsz
+                <RepeatButton Width="65" Height="65" Click="Shrink" Margin="5 0 5 5">Zmniejsz
                 </RepeatButton>
             </StackPanel>
-            <Button>Close</Button>
+            <Button Click="OkClick">Ok</Button>
         </StackPanel>
         <!--Border to klasa, ktora definiuje obramowanie dla jego dzieci
 Ten border ma sie znalexc w pierwszym (jedynym) wierszu LayoutRoot grida i w drugiej jego kolumnie-->
@@ -65,7 +65,7 @@ Ten border ma sie znalexc w pierwszym (jedynym) wierszu LayoutRoot grida i w dru
             <!--Dzieckiem border bedzie canvas (kontrolka na ktorej mozemy rysowac jak na obrazie
 Jej nazwa to 'kartka'
 To wlasnie tutaj bedziemy dodawac obrazy i textboxy-->
-            <Canvas Background="Gray"  MouseMove="RuchMyszy" Name="kartka"/>
+            <Canvas VerticalAlignment="Top" HorizontalAlignment="Left" Background="Yellow"  MouseMove="MoveMouse" Name="editableCanvas"/>
         </Border>
     </Grid>
 
