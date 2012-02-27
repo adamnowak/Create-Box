@@ -55,6 +55,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Box.cs" />
+    <Compile Include="WallType.cs" />
+    <Compile Include="Wall.cs" />
     <Compile Include="ThreeDPreviewWindow.xaml.cs">
       <DependentUpon>ThreeDPreviewWindow.xaml</DependentUpon>
     </Compile>
