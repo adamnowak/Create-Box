@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Xml;
 
@@ -180,6 +182,18 @@ namespace BoxCreator
         }
       }
     }
+
+    private void MoveEditedElementX(double x)
+    {
+      if (_translate != null)
+        _translate.X = x;
+    }
+    private void MoveEditedElementY(double y)
+    {
+      if (_translate != null)
+        _translate.Y = y;
+    }
+
     public void MoveEditedElementLeft()
     {
       if (_translate != null)
@@ -201,6 +215,12 @@ namespace BoxCreator
         _translate.Y -= 1;
     }
 
+    private void TurnEditedElement(double angle)
+    {
+      if (_rotate != null)
+        _rotate.Angle = angle;
+    }
+
     public void TurnEditedElementLeft()
     {
       if (_rotate != null)
@@ -211,6 +231,16 @@ namespace BoxCreator
       if (_rotate != null)
         _rotate.Angle += 1;
     }
+
+    private void ScaleEditedElement(double scale)
+    {
+      if (_scale != null)
+      {
+        _scale.ScaleX = scale;
+        _scale.ScaleY = scale;
+      }
+    }
+
     public void EnlargeEditedElement()
     {
       if (_scale != null)
@@ -249,23 +279,26 @@ namespace BoxCreator
       return (int)(scale * realDimention);
     }
 
-    public void Save(XmlDocument xmlDocument, XmlElement box)
+    public void Save(XmlElement boxXmlElement)
     {
-      XmlElement xmlWallElement = xmlDocument.CreateElement(WallType.ToString());
-      box.AppendChild(xmlWallElement);
+      if (boxXmlElement == null) return;
+      XmlElement xmlWallElement = boxXmlElement.OwnerDocument.CreateElement(WallType.ToString());
+      boxXmlElement.AppendChild(xmlWallElement);
       foreach (FrameworkElement frameworkElement in Children)
       {
-        SaveElement(xmlDocument, xmlWallElement, frameworkElement);
+        SaveElement(xmlWallElement, frameworkElement);
       }
     }
 
-    private void SaveElement(XmlDocument xmlDocument, XmlElement xmlWallElement, FrameworkElement frameworkElement)
+    private void SaveElement(XmlElement xmlWallElement, FrameworkElement frameworkElement)
     {
+      if (xmlWallElement == null) return;
+
       XmlElement xmlItemElement = null;
       if (frameworkElement is TextBlock)
       {
         TextBlock textBlock = (TextBlock)frameworkElement;
-        xmlItemElement = xmlDocument.CreateElement("Text");
+        xmlItemElement = xmlWallElement.OwnerDocument.CreateElement("Text");
         xmlWallElement.AppendChild(xmlItemElement);
         xmlItemElement.SetAttribute("Text", textBlock.Text);
 
@@ -273,7 +306,7 @@ namespace BoxCreator
       if (frameworkElement is Image)
       {
         Image image = (Image)frameworkElement;
-        xmlItemElement = xmlDocument.CreateElement("Image");
+        xmlItemElement = xmlWallElement.OwnerDocument.CreateElement("Image");
         xmlWallElement.AppendChild(xmlItemElement);
         xmlItemElement.SetAttribute("ImagePath", image.Tag.ToString());
       }
@@ -328,9 +361,102 @@ namespace BoxCreator
       return null;
     }
 
-    public void Load(XmlElement box)
+    public void Load(XmlElement xmlWallElement)
     {
-      
+      foreach (XmlElement xmlItemElement in xmlWallElement.ChildNodes)
+      {
+        FrameworkElement frameworkElement = null;
+
+        switch (xmlItemElement.Name)
+        {
+          case "Text":
+            TextBlock textBlock = new TextBlock();
+            textBlock.Text = xmlItemElement.GetAttribute("Text");
+            frameworkElement = textBlock;
+
+
+            break;
+          case "Image":
+            string imagePath = xmlItemElement.GetAttribute("ImagePath");
+            if (File.Exists(imagePath))
+            {
+              Image img = new Image();
+              ImageSourceConverter converter = new ImageSourceConverter();
+              img.Source = (ImageSource) converter.ConvertFromString(imagePath);
+              img.Width = 60;
+              img.Height = 30;
+              img.Tag = imagePath;
+              frameworkElement = img;
+            }
+            break;
+        }
+
+        if (frameworkElement != null)
+        {
+          AddElement(frameworkElement, this);
+          RegisterTransformsElement(frameworkElement);
+          MoveEditedElementX(double.Parse(xmlItemElement.GetAttribute("X")));
+          MoveEditedElementY(double.Parse(xmlItemElement.GetAttribute("Y")));
+          ScaleEditedElement(double.Parse(xmlItemElement.GetAttribute("Scale")));
+          TurnEditedElement(double.Parse(xmlItemElement.GetAttribute("Angle")));
+        }
+      }
+    }
+
+    private void AddElement(FrameworkElement elem, Canvas destinationCanvas)
+    {
+      if (elem != null && destinationCanvas != null)
+      {
+        AddTransformationsToElement(elem);
+        elem.MouseLeftButtonDown += SelectElementToEdit;
+        elem.MouseMove += MoveMouse;
+        elem.MouseLeftButtonUp += UnselectElementToEdit;
+        destinationCanvas.Children.Add(elem);
+      }
+    }
+
+    public void AddElement(FrameworkElement elem)
+    {
+      AddElement(elem, EditableCanvas);      
+    }
+
+    
+    private Point _clickPosition;
+    private bool _isMouseDown = false;
+
+    private void SelectElementToEdit(object sender, MouseButtonEventArgs e)
+    {
+      RegisterTransformsElement(e.OriginalSource as UIElement);
+      _clickPosition = e.GetPosition(EditableCanvas);
+      _isMouseDown = true;
+    }
+    private void UnselectElementToEdit(object sender, MouseButtonEventArgs e)
+    {
+      _isMouseDown = false;
+    }
+    public void MoveMouse(object sender, MouseEventArgs e)
+    {
+      if (_isMouseDown)
+      {
+        Point mousePos = e.GetPosition(EditableCanvas);
+        Point delta = new Point(mousePos.X - _clickPosition.X, mousePos.Y - _clickPosition.Y);
+        ChangeEditedElementPosition(delta);
+        _clickPosition = mousePos;
+      }
+    }
+
+
+    private Canvas _editableCanvas;
+    public Canvas EditableCanvas
+    {
+      get { return _editableCanvas; }
+      set
+      {
+        if (_editableCanvas != null)
+          _editableCanvas.MouseMove -= MoveMouse;
+        _editableCanvas = value;
+        _editableCanvas.MouseMove += MoveMouse;
+      }
     }
   }
 }

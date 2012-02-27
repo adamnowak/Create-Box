@@ -313,21 +313,21 @@ namespace BoxCreator
       
       if (IsWithCover)
       {
-        CoverWall.Save(doc, boxXmlElement);
-        LeftCoverWall.Save(doc, boxXmlElement);
-        BackCoverWall.Save(doc, boxXmlElement);
-        FrontCoverWall.Save(doc, boxXmlElement);
-        RightCoverWall.Save(doc, boxXmlElement);
+        CoverWall.Save(boxXmlElement);
+        LeftCoverWall.Save(boxXmlElement);
+        BackCoverWall.Save(boxXmlElement);
+        FrontCoverWall.Save(boxXmlElement);
+        RightCoverWall.Save(boxXmlElement);
       }
       else
       {
-        UpWall.Save(doc, boxXmlElement);
+        UpWall.Save(boxXmlElement);
       }
-      BottomWall.Save(doc, boxXmlElement);
-      FrontWall.Save(doc, boxXmlElement);
-      BackWall.Save(doc, boxXmlElement);
-      LeftWall.Save(doc, boxXmlElement);
-      RightWall.Save(doc, boxXmlElement);
+      BottomWall.Save(boxXmlElement);
+      FrontWall.Save(boxXmlElement);
+      BackWall.Save(boxXmlElement);
+      LeftWall.Save(boxXmlElement);
+      RightWall.Save(boxXmlElement);
       
       doc.Save(path);
     }
@@ -345,9 +345,31 @@ namespace BoxCreator
         int realCoverHeight = int.Parse(boxXmlElement.GetAttribute("RealCoverHeight"));
         Rebuild(canvasToDisplay, realWidth, realLength, realHeight, realCoverHeight, 550, 550);
 
+
         foreach (XmlElement xmlWallElement in boxXmlElement.ChildNodes)
         {
-          
+          switch (xmlWallElement.Name )
+          {
+            case "Up":
+              UpWall.Load(xmlWallElement);
+              break;
+            case "Bottom":
+              BottomWall.Load(xmlWallElement);
+              break;
+            case "Front":
+              FrontWall.Load(xmlWallElement);
+              break;
+            case "Back":
+              BackWall.Load(xmlWallElement);
+              break;
+            case "Left":
+              LeftWall.Load(xmlWallElement);
+              break;
+            case "Right":
+              RightWall.Load(xmlWallElement);
+              break;
+            //TODO: with cover
+          }
         }
       }
     }

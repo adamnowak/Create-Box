@@ -65,7 +65,7 @@ Ten border ma sie znalexc w pierwszym (jedynym) wierszu LayoutRoot grida i w dru
             <!--Dzieckiem border bedzie canvas (kontrolka na ktorej mozemy rysowac jak na obrazie
 Jej nazwa to 'kartka'
 To wlasnie tutaj bedziemy dodawac obrazy i textboxy-->
-            <Canvas VerticalAlignment="Top" HorizontalAlignment="Left" Background="Yellow"  MouseMove="MoveMouse" Name="editableCanvas"/>
+            <Canvas VerticalAlignment="Top" HorizontalAlignment="Left" Background="Yellow"  Name="editableCanvas"/>
         </Border>
     </Grid>
 

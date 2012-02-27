@@ -18,12 +18,12 @@ namespace BoxCreator
   /// </summary>
   public partial class SketchWindow : Window
   {
-    private Point clickPosition;
-    private bool isMouseDown = false;
+
 
     public SketchWindow()
     {
       InitializeComponent();
+      
     }
 
 
@@ -32,56 +32,7 @@ namespace BoxCreator
       AddElementWindow addElementWindow = new AddElementWindow();
       addElementWindow.ShowDialog();
       FrameworkElement elem = addElementWindow.Element;
-      if (elem != null)
-      {
-         WallToEdit.AddTransformationsToElement(elem);
-        elem.MouseLeftButtonDown += SelectElementToEdit;
-        elem.MouseMove += MoveMouse;
-        elem.MouseLeftButtonUp += UnselectElementToEdit;
-        editableCanvas.Children.Add(elem);
-      }
-
-      //FrameworkElement elem = null;
-      //Random rd = new Random();
-      ////zawsze tekst tymczasowo
-      //if (rd.Next() % 2 == 0)
-      //{
-      //  Image img = new Image();
-      //  ImageSourceConverter converter = new ImageSourceConverter();
-      //  img.Source = (ImageSource)converter.ConvertFromString("test.png");
-      //  img.Width = 60;
-      //  img.Height = 30;
-      //  elem = img;
-      //}
-      //else
-      //{
-      //  TextBlock tb = new TextBlock();
-      //  tb.Text = "test";
-      //  elem = tb;
-      //}
-     
-    }
-
-    
-    private void SelectElementToEdit(object sender, MouseButtonEventArgs e)
-    {
-      WallToEdit.RegisterTransformsElement(e.OriginalSource as UIElement);
-      clickPosition = e.GetPosition(editableCanvas);
-      isMouseDown = true;
-    }
-    private void UnselectElementToEdit(object sender, MouseButtonEventArgs e)
-    {
-      isMouseDown = false;
-    }
-    private void MoveMouse(object sender, MouseEventArgs e)
-    {
-      if (isMouseDown)
-      {
-        Point mousePos = e.GetPosition(editableCanvas);
-        Point delta = new Point(mousePos.X - clickPosition.X, mousePos.Y - clickPosition.Y);
-        WallToEdit.ChangeEditedElementPosition(delta);
-        clickPosition = mousePos;
-      }
+      WallToEdit.AddElement(elem);
     }
 
     private void MoveUp(object sender, RoutedEventArgs e)
@@ -131,7 +82,8 @@ namespace BoxCreator
     /// <param name="e">The <see cref="System.ComponentModel.CancelEventArgs"/> instance containing the event data.</param>
     private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
     {
-      Wall.CopyCanvases(editableCanvas, _wallToEdit);      
+      Wall.CopyCanvases(editableCanvas, _wallToEdit);
+     
     }
 
     private Wall _wallToEdit;
@@ -150,6 +102,7 @@ namespace BoxCreator
         _wallToEdit = value;
         Wall.CopyCanvases(_wallToEdit, editableCanvas, true);
         Title = Title + " - edited wall (" + WallType.WallTypeEnumToString(_wallToEdit.WallType) +")";
+        _wallToEdit.EditableCanvas = editableCanvas;
       }
     }
 
