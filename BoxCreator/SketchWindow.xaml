@@ -22,22 +22,22 @@
             <TextBlock Height="23" Text="Choose color:" Margin="5,5,5,0" />
             <ComboBox Name="cbWallColorSelection" 
                  SelectionChanged="CbWallColorSelectionChanged">
-                <ComboBoxItem Content="Aqua" Tag="#00FFFF" />
-                <ComboBoxItem Content="Black" Tag="#000000" />
-                <ComboBoxItem Content="Blue" Tag="#0000FF" />
-                <ComboBoxItem Content="Fuchsia" Tag="#FF00FF" />
-                <ComboBoxItem Content="Gray" Tag="#808080" />
-                <ComboBoxItem Content="Green" Tag="#008000" />
-                <ComboBoxItem Content="Lime" Tag="#00FF00" />
-                <ComboBoxItem Content="Maroon" Tag="#800000" />
-                <ComboBoxItem Content="Navy" Tag="#000080" />
-                <ComboBoxItem Content="Olive" Tag="#808000" />
-                <ComboBoxItem Content="Purple" Tag="#800080" />
-                <ComboBoxItem Content="Red" Tag="#FF0000" />
-                <ComboBoxItem Content="Silver" Tag="#C0C0C0" />
-                <ComboBoxItem Content="Teal" Tag="#008080" />
-                <ComboBoxItem Content="White" Tag="#FFFFFF" />
-                <ComboBoxItem Content="Yellow" Tag="#FFFF00" />
+                <ComboBoxItem Content="Aqua" Tag="#FF00FFFF" />
+                <ComboBoxItem Content="Black" Tag="#FF000000" />
+                <ComboBoxItem Content="Blue" Tag="#FF0000FF" />
+                <ComboBoxItem Content="Fuchsia" Tag="#FFFF00FF" />
+                <!--<ComboBoxItem Content="Gray" Tag="#FF808080" />-->
+                <ComboBoxItem Content="Green" Tag="#FF008000" />
+                <ComboBoxItem Content="Lime" Tag="#FF00FF00" />
+                <ComboBoxItem Content="Maroon" Tag="#FF800000" />
+                <ComboBoxItem Content="Navy" Tag="#FF000080" />
+                <ComboBoxItem Content="Olive" Tag="#FF808000" />
+                <ComboBoxItem Content="Purple" Tag="#FF800080" />
+                <ComboBoxItem Content="Red" Tag="#FFFF0000" />
+                <ComboBoxItem Content="Silver" Tag="#FFC0C0C0" />
+                <ComboBoxItem Content="Teal" Tag="#FF008080" />
+                <ComboBoxItem Content="White" Tag="#FFFFFFFF" />
+                <ComboBoxItem Content="Yellow" Tag="#FFFFFF00" />
             </ComboBox>
             <!--Kolejnym elementem w LeftPanel bedzie TextBlock (kontrolka wypisujaca text), ktora wypisze Pozycja:-->
             <TextBlock Text="Position:" Margin="5"></TextBlock>

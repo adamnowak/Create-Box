@@ -118,7 +118,7 @@ namespace BoxCreator
       Title = Title + " - edited wall (" + WallType.WallTypeEnumToString(_wallToEdit.WallType) + ")";
       foreach (ComboBoxItem cbi in cbWallColorSelection.Items)
       {
-        if (_wallToEdit.WallColor.ToString().Substring(3, 6) == cbi.Tag.ToString().Substring(1, 6))
+        if (_wallToEdit.WallColor.ToString() == cbi.Tag.ToString())
         {
           cbWallColorSelection.SelectedItem = cbi;
           break;

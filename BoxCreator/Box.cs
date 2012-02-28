@@ -62,17 +62,17 @@ namespace BoxCreator
       Scale = GetScale(realWidth, realLength, realHeight, realCoverHeight, BoxType, MainCanvasHeight, MainCanvasWidth); 
 
       UpWall = new Wall(GetSizeToDisplay(RealLength), GetSizeToDisplay(RealWidth), Colors.Yellow, WallType.WallTypeEnum.Up);
-      BackWall = new Wall(GetSizeToDisplay(RealLength), GetSizeToDisplay(RealHeight), Colors.Orange, WallType.WallTypeEnum.Back);
+      BackWall = new Wall(GetSizeToDisplay(RealLength), GetSizeToDisplay(RealHeight), Colors.Fuchsia, WallType.WallTypeEnum.Back);
       BottomWall = new Wall(GetSizeToDisplay(RealLength), GetSizeToDisplay(RealWidth), Colors.Black, WallType.WallTypeEnum.Bottom);
-      FrontWall = new Wall(GetSizeToDisplay(RealLength), GetSizeToDisplay(RealHeight), Colors.Beige, WallType.WallTypeEnum.Front);
-      LeftWall = new Wall(GetSizeToDisplay(RealHeight), GetSizeToDisplay(RealWidth), Colors.Orchid, WallType.WallTypeEnum.Left);
-      RightWall = new Wall(GetSizeToDisplay(RealHeight), GetSizeToDisplay(RealWidth), Colors.Olive, WallType.WallTypeEnum.Right);
+      FrontWall = new Wall(GetSizeToDisplay(RealLength), GetSizeToDisplay(RealHeight), Colors.Green, WallType.WallTypeEnum.Front);
+      LeftWall = new Wall(GetSizeToDisplay(RealHeight), GetSizeToDisplay(RealWidth), Colors.Lime, WallType.WallTypeEnum.Left);
+      RightWall = new Wall(GetSizeToDisplay(RealHeight), GetSizeToDisplay(RealWidth), Colors.Maroon, WallType.WallTypeEnum.Right);
 
       CoverWall = new Wall(GetSizeToDisplay(RealLength), GetSizeToDisplay(RealWidth), Colors.Yellow, WallType.WallTypeEnum.Cover);
-      BackCoverWall = new Wall(GetSizeToDisplay(RealLength), GetSizeToDisplay(RealCoverHeight), Colors.Orange, WallType.WallTypeEnum.BackCover);
-      FrontCoverWall = new Wall(GetSizeToDisplay(RealLength), GetSizeToDisplay(RealCoverHeight), Colors.Orange, WallType.WallTypeEnum.FrontCover);
-      LeftCoverWall = new Wall(GetSizeToDisplay(RealCoverHeight), GetSizeToDisplay(RealWidth), Colors.Orchid, WallType.WallTypeEnum.LeftCover);
-      RightCoverWall = new Wall(GetSizeToDisplay(RealCoverHeight), GetSizeToDisplay(RealWidth), Colors.Orchid, WallType.WallTypeEnum.RightCover);
+      BackCoverWall = new Wall(GetSizeToDisplay(RealLength), GetSizeToDisplay(RealCoverHeight), Colors.Teal, WallType.WallTypeEnum.BackCover);
+      FrontCoverWall = new Wall(GetSizeToDisplay(RealLength), GetSizeToDisplay(RealCoverHeight), Colors.Teal, WallType.WallTypeEnum.FrontCover);
+      LeftCoverWall = new Wall(GetSizeToDisplay(RealCoverHeight), GetSizeToDisplay(RealWidth), Colors.Teal, WallType.WallTypeEnum.LeftCover);
+      RightCoverWall = new Wall(GetSizeToDisplay(RealCoverHeight), GetSizeToDisplay(RealWidth), Colors.Teal, WallType.WallTypeEnum.RightCover);
 
       //calculation for displaying on the center the canvas
       int lengthToDisplay = (int)(2 * EdgeGap + 2 * WallGap + GetSizeToDisplay(2 * RealHeight + RealLength));
@@ -463,7 +463,22 @@ namespace BoxCreator
               case "Right":
                 RightWall.Load(xmlWallElement);
                 break;
-              //TODO: with cover
+
+              case "Cover":
+                CoverWall.Load(xmlWallElement);
+                break;
+              case "FrontCover":
+                FrontCoverWall.Load(xmlWallElement);
+                break;
+              case "BackCover":
+                BackCoverWall.Load(xmlWallElement);
+                break;
+              case "LeftCover":
+                LeftCoverWall.Load(xmlWallElement);
+                break;
+              case "RightCover":
+                RightCoverWall.Load(xmlWallElement);
+                break;
             }
           }
         }

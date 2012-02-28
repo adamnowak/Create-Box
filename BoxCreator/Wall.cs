@@ -132,7 +132,7 @@ namespace BoxCreator
 
         }
       }
-      destinationWall.Background = Background;
+      destinationWall.WallColor = WallColor;
 
       if (moveSize)
       {
