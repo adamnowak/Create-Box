@@ -4,28 +4,29 @@
 
     <Window.Resources>
         <!--<MeshGeometry3D x:Key="bottomWall3DMeshGeometry3D" Normals="0,-1,0 0,-1,0 0,-1,0 0,-1,0" Positions="-0.5,0,0.5 0.5,0,-0.5 0.5,0,0.5 -0.5,0,-0.5" TextureCoordinates="0,1 1,0 1,1 0,0" TriangleIndices="0 1 2 1 0 3"/>
-        <MeshGeometry3D x:Key="plane2" Normals="0,0,1 0,0,1 0,0,1 0,0,1" Positions="-0.5,0,0.5 0.5,0,0.5 0.5,1,0.5 -0.5,1,0.5" TextureCoordinates="0,1 1,1 1,0 0,0" TriangleIndices="0 1 2 2 3 0"/>
-        <MeshGeometry3D x:Key="plane3" Normals="0,0,-1 0,0,-1 0,0,-1 0,0,-1" Positions="-0.5,0,-0.5 0.5,1,-0.5 0.5,0,-0.5 -0.5,1,-0.5" TextureCoordinates="0,1 1,0 1,1 0,0" TriangleIndices="0 1 2 1 0 3"/>
-        <MeshGeometry3D x:Key="plane4" Normals="1,0,0 1,0,0 1,0,0 1,0,0" Positions="0.5,0,0.5 0.5,0,-0.5 0.5,1,-0.5 0.5,1,0.5" TextureCoordinates="0,1 1,1 1,0 0,0" TriangleIndices="0 1 2 2 3 0"/>
-        <MeshGeometry3D x:Key="plane5" Normals="-1,0,0 -1,0,0 -1,0,0 -1,0,0" Positions="-0.5,0,0.5 -0.5,1,-0.5 -0.5,0,-0.5 -0.5,1,0.5" TextureCoordinates="0,1 1,0 1,1 0,0" TriangleIndices="0 1 2 1 0 3"/>
+        <MeshGeometry3D x:Key="frontWall3DMeshGeometry3D" Normals="0,0,1 0,0,1 0,0,1 0,0,1" Positions="-0.5,0,0.5 0.5,0,0.5 0.5,1,0.5 -0.5,1,0.5" TextureCoordinates="0,1 1,1 1,0 0,0" TriangleIndices="0 1 2 2 3 0"/>
+        <MeshGeometry3D x:Key="backWall3DMeshGeometry3D" Normals="0,0,-1 0,0,-1 0,0,-1 0,0,-1" Positions="-0.5,0,-0.5 0.5,1,-0.5 0.5,0,-0.5 -0.5,1,-0.5" TextureCoordinates="0,1 1,0 1,1 0,0" TriangleIndices="0 1 2 1 0 3"/>
+        <MeshGeometry3D x:Key="rightWall3DMeshGeometry3D" Normals="1,0,0 1,0,0 1,0,0 1,0,0" Positions="0.5,0,0.5 0.5,0,-0.5 0.5,1,-0.5 0.5,1,0.5" TextureCoordinates="0,1 1,1 1,0 0,0" TriangleIndices="0 1 2 2 3 0"/>
+        <MeshGeometry3D x:Key="leftWall3DMeshGeometry3D" Normals="-1,0,0 -1,0,0 -1,0,0 -1,0,0" Positions="-0.5,0,0.5 -0.5,1,-0.5 -0.5,0,-0.5 -0.5,1,0.5" TextureCoordinates="0,1 1,0 1,1 0,0" TriangleIndices="0 1 2 1 0 3"/>
         <MeshGeometry3D x:Key="upWall3DMeshGeometry3D" Normals="0,1,0 0,1,0 0,1,0 0,1,0" Positions="-0.5,1,0.5 0.5,1,0.5 0.5,1,-0.5 -0.5,1,-0.5" TextureCoordinates="0,1 1,1 1,0 0,0" TriangleIndices="0 1 2 2 3 0"/>-->
+        
         <MeshGeometry3D x:Key="bottomWall3DMeshGeometry3D"  
                         Positions="-0.5,0,0.5 0.5,0,-0.5 0.5,0,0.5 -0.5,0,-0.5" 
                         TriangleIndices="0 1 2 1 0 3"
                         TextureCoordinates="0,1 1,0 1,1 0,0"/>
-        <MeshGeometry3D x:Key="plane2"  
+        <MeshGeometry3D x:Key="frontWall3DMeshGeometry3D"  
                         Positions="-0.5,0,0.5 0.5,0,0.5 0.5,1,0.5 -0.5,1,0.5"                         
                         TriangleIndices="0 1 2 2 3 0" 
                         TextureCoordinates="0,1 1,1 1,0 0,0" />
-        <MeshGeometry3D x:Key="plane3"  
+        <MeshGeometry3D x:Key="backWall3DMeshGeometry3D"  
                         Positions="-0.5,0,-0.5 0.5,1,-0.5 0.5,0,-0.5 -0.5,1,-0.5"                          
                         TriangleIndices="0 1 2 1 0 3"
                         TextureCoordinates="0,1 1,0 1,1 0,0"/>
-        <MeshGeometry3D x:Key="plane4"  
+        <MeshGeometry3D x:Key="rightWall3DMeshGeometry3D"  
                         Positions="0.5,0,0.5 0.5,0,-0.5 0.5,1,-0.5 0.5,1,0.5" 
                         TriangleIndices="0 1 2 2 3 0"
                         TextureCoordinates="0,1 1,1 1,0 0,0" />
-        <MeshGeometry3D x:Key="plane5"  
+        <MeshGeometry3D x:Key="leftWall3DMeshGeometry3D"  
                         Positions="-0.5,0,0.5 -0.5,1,-0.5 -0.5,0,-0.5 -0.5,1,0.5" 
                         TriangleIndices="0 1 2 1 0 3"
                         TextureCoordinates="0,1 1,0 1,1 0,0"/>
@@ -33,6 +34,31 @@
                         Positions="-0.5,1,0.5 0.5,1,0.5 0.5,1,-0.5 -0.5,1,-0.5"
                         TriangleIndices="0 1 2 2 3 0"
                         TextureCoordinates="0,1 1,1 1,0 0,0"/>
+        
+        <!--<MeshGeometry3D x:Key="bottomWall3DMeshGeometry3D"  
+                        Positions="-0.5,0,0.5 0.5,0,-0.5 0.5,0,0.5 -0.5,0,-0.5" 
+                        TriangleIndices="0 1 2 1 0 3"
+                        />
+        <MeshGeometry3D x:Key="frontWall3DMeshGeometry3D"  
+                        Positions="-0.5,0,0.5 0.5,0,0.5 0.5,1,0.5 -0.5,1,0.5"                         
+                        TriangleIndices="0 1 2 2 3 0" 
+                         />
+        <MeshGeometry3D x:Key="backWall3DMeshGeometry3D"  
+                        Positions="-0.5,0,-0.5 0.5,1,-0.5 0.5,0,-0.5 -0.5,1,-0.5"                          
+                        TriangleIndices="0 1 2 1 0 3"
+                        />
+        <MeshGeometry3D x:Key="rightWall3DMeshGeometry3D"  
+                        Positions="0.5,0,0.5 0.5,0,-0.5 0.5,1,-0.5 0.5,1,0.5" 
+                        TriangleIndices="0 1 2 2 3 0"
+                        />
+        <MeshGeometry3D x:Key="leftWall3DMeshGeometry3D"  
+                        Positions="-0.5,0,0.5 -0.5,1,-0.5 -0.5,0,-0.5 -0.5,1,0.5" 
+                        TriangleIndices="0 1 2 1 0 3"
+                        />
+        <MeshGeometry3D x:Key="upWall3DMeshGeometry3D"      
+                        Positions="-0.5,1,0.5 0.5,1,0.5 0.5,1,-0.5 -0.5,1,-0.5"
+                        TriangleIndices="0 1 2 2 3 0"
+                        />-->
     </Window.Resources>
     <DockPanel>
         <ScrollBar Name="scrollBarHorz" DockPanel.Dock="Bottom" Orientation="Horizontal"
@@ -58,7 +84,7 @@
                     </Viewport2DVisual3D.Visual>
                 </Viewport2DVisual3D>
 
-                <Viewport2DVisual3D Geometry="{StaticResource plane2}" x:Name="viewportFrontWall">
+                <Viewport2DVisual3D Geometry="{StaticResource frontWall3DMeshGeometry3D}" x:Name="viewportFrontWall">
                     <Viewport2DVisual3D.Material>
                         <DiffuseMaterial Viewport2DVisual3D.IsVisualHostMaterial="True" Brush="Green"/>
                     </Viewport2DVisual3D.Material>
@@ -71,7 +97,7 @@
                     </Viewport2DVisual3D.Visual>
                 </Viewport2DVisual3D>
 
-                <Viewport2DVisual3D Geometry="{StaticResource plane3}" x:Name="viewportBackWall">
+                <Viewport2DVisual3D Geometry="{StaticResource backWall3DMeshGeometry3D}" x:Name="viewportBackWall">
                     <Viewport2DVisual3D.Material>
                         <DiffuseMaterial Viewport2DVisual3D.IsVisualHostMaterial="True" Brush="Black"/>
                     </Viewport2DVisual3D.Material>
@@ -84,7 +110,7 @@
                     </Viewport2DVisual3D.Visual>
                 </Viewport2DVisual3D>
 
-                <Viewport2DVisual3D Geometry="{StaticResource plane4}" x:Name="viewportRightWall">
+                <Viewport2DVisual3D Geometry="{StaticResource rightWall3DMeshGeometry3D}" x:Name="viewportRightWall">
                     <Viewport2DVisual3D.Material>
                         <DiffuseMaterial Viewport2DVisual3D.IsVisualHostMaterial="True" Brush="Yellow"/>
                     </Viewport2DVisual3D.Material>
@@ -97,7 +123,7 @@
                     </Viewport2DVisual3D.Visual>
                 </Viewport2DVisual3D>
 
-                <Viewport2DVisual3D Geometry="{StaticResource plane5}" x:Name="viewportLeftWall">
+                <Viewport2DVisual3D Geometry="{StaticResource leftWall3DMeshGeometry3D}" x:Name="viewportLeftWall">
                     <Viewport2DVisual3D.Material>
                         <DiffuseMaterial Viewport2DVisual3D.IsVisualHostMaterial="True" Brush="White"/>
                     </Viewport2DVisual3D.Material>

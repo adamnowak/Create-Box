@@ -142,6 +142,11 @@ namespace BoxCreator
         cnsWallTable.WallColor = (Color)ColorConverter.ConvertFromString(color);
       }
     }
+
+    private void DeleteItemClick(object sender, RoutedEventArgs e)
+    {
+      WallToEdit.DeleteEditedElement();
+    }
   }
 }
 

@@ -1,11 +1,10 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Xml;
-
-
 
 namespace BoxCreator
 {
@@ -34,7 +33,6 @@ namespace BoxCreator
       //WallColor = ;     
       WallType = BoxCreator.WallType.WallTypeEnum.Unknown;
     }
-
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Wall"/> class.
@@ -670,6 +668,18 @@ namespace BoxCreator
         _editableCanvas.MouseMove += MoveMouse;
         
       }
+    }
+
+    /// <summary>
+    /// Deletes the edited element.
+    /// </summary>
+    public void DeleteEditedElement()
+    {     
+      if (_editedElement != null)
+      {
+        _editableCanvas.Children.Remove(_editedElement);
+      }
+      CleanTransforms();
     }
   }
 }

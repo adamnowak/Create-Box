@@ -33,7 +33,12 @@ namespace BoxCreator
         _boxToDisplay3D = value;
         if (_boxToDisplay3D.IsRebuild)
         {
-          _boxToDisplay3D.UpWall.CopyToWall(wallUp);
+          //_boxToDisplay3D.UpWall.CopyToWall(wallUp, true);
+          //_boxToDisplay3D.BottomWall.CopyToWall(wallBottom, true);
+          //_boxToDisplay3D.FrontWall.CopyToWall(wallFront, true);
+          //_boxToDisplay3D.BackWall.CopyToWall(wallBack, true);
+          //_boxToDisplay3D.LeftWall.CopyToWall(wallLeft, true);
+          //_boxToDisplay3D.RightWall.CopyToWall(wallRight, true);
         }
       }
     }
