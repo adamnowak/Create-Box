@@ -1,17 +1,7 @@
 ﻿<Window x:Class="BoxCreator.SketchWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:BoxCreator="clr-namespace:BoxCreator" 
-        Title="Wall editor" Height="500" MinHeight="500" MaxHeight="500" Width="690" MinWidth="690" MaxWidth="690" Closing="Window_Closing">
-    <Window.Resources>
-
-        <DataTemplate x:Key="SolidColorTemplate" DataType="{x:Type SolidColorBrush}">
-            <DockPanel Margin="1">
-                <Border Background="{Binding}" Width="15" Height="15" DockPanel.Dock="Left"/>
-                <TextBlock Text="{Binding}" Margin="5,0,0,0"/>
-            </DockPanel>
-        </DataTemplate>
-
-    </Window.Resources>
+        Title="Wall editor" Height="500" MinHeight="500" MaxHeight="500" Width="690" MinWidth="690" MaxWidth="690" >
     <!--Grid - to kontrolka, ktora wyglada jak siatka (ma wiersze i kolumny)
     grid o nazwie LayoutRoot jest dzieckiem (jedynym dzieckiem okna MainWindow-->
     <Grid x:Name="gridLayoutRoot" Background="Goldenrod">
@@ -30,18 +20,24 @@
             <!--Do LeftPanel dodajemy button, ktorego opis bedzie Dodaj, a na jego klikniecie wywola sie metoda Button_Click-->
             <Button Margin="10 10 10 10" Click="AddItemToSelectedElementClick" Content="Add element"></Button>
             <TextBlock Height="23" Text="Choose color:" Margin="5,5,5,0" />
-            <ComboBox 
-                      Height="Auto" Name="cbChooseColor" Width="Auto" Margin="10,0,10,10" 
-                 ItemTemplate="{StaticResource SolidColorTemplate}" 
-                SelectedIndex="0">
-               
-                <SolidColorBrush Color="Red"/>
-                <SolidColorBrush Color="Green"/>
-                <SolidColorBrush Color="Blue"/>
-                <SolidColorBrush Color="Cyan"/>
-                <SolidColorBrush Color="Magenta"/>
-                <SolidColorBrush Color="Yellow"/>
-                <SolidColorBrush Color="Black"/>
+            <ComboBox Name="cbWallColorSelection" 
+                 SelectionChanged="CbWallColorSelectionChanged">
+                <ComboBoxItem Content="Aqua" Tag="#00FFFF" />
+                <ComboBoxItem Content="Black" Tag="#000000" />
+                <ComboBoxItem Content="Blue" Tag="#0000FF" />
+                <ComboBoxItem Content="Fuchsia" Tag="#FF00FF" />
+                <ComboBoxItem Content="Gray" Tag="#808080" />
+                <ComboBoxItem Content="Green" Tag="#008000" />
+                <ComboBoxItem Content="Lime" Tag="#00FF00" />
+                <ComboBoxItem Content="Maroon" Tag="#800000" />
+                <ComboBoxItem Content="Navy" Tag="#000080" />
+                <ComboBoxItem Content="Olive" Tag="#808000" />
+                <ComboBoxItem Content="Purple" Tag="#800080" />
+                <ComboBoxItem Content="Red" Tag="#FF0000" />
+                <ComboBoxItem Content="Silver" Tag="#C0C0C0" />
+                <ComboBoxItem Content="Teal" Tag="#008080" />
+                <ComboBoxItem Content="White" Tag="#FFFFFF" />
+                <ComboBoxItem Content="Yellow" Tag="#FFFF00" />
             </ComboBox>
             <!--Kolejnym elementem w LeftPanel bedzie TextBlock (kontrolka wypisujaca text), ktora wypisze Pozycja:-->
             <TextBlock Text="Position:" Margin="5"></TextBlock>

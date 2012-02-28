@@ -20,12 +20,19 @@ namespace BoxCreator
   {
 
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SketchWindow"/> class.
+    /// </summary>
     public SketchWindow()
     {
       InitializeComponent();
     }
 
-
+    /// <summary>
+    /// Add item button click handler. Creates and adds the item (text or image) to selected element.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
     public void AddItemToSelectedElementClick(object sender, RoutedEventArgs e)
     {
       AddElementWindow addElementWindow = new AddElementWindow();
@@ -34,6 +41,11 @@ namespace BoxCreator
       WallToEdit.AddElement(elem);
     }
 
+    /// <summary>
+    /// Up button click handler. Move selected element at 1 px up.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
     private void MoveUp(object sender, RoutedEventArgs e)
     {
       WallToEdit.MoveEditedElementUp();
@@ -74,16 +86,6 @@ namespace BoxCreator
       WallToEdit.ShrinkEditedElement();
     }
 
-    /// <summary>
-    /// Handles the Closing event of the Window control.
-    /// </summary>
-    /// <param name="sender">The source of the event.</param>
-    /// <param name="e">The <see cref="System.ComponentModel.CancelEventArgs"/> instance containing the event data.</param>
-    private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-    {
-      cnsWallTable.CopyToWall(_wallToEdit);
-     
-    }
 
     private Wall _wallToEdit;
     /// <summary>
@@ -95,19 +97,15 @@ namespace BoxCreator
     public Wall WallToEdit
     {
       get { return _wallToEdit; }
-
       set
       {
         _wallToEdit = value;
-        //_wallToEdit.EditableCanvas = cnsWallTable;
-        //_wallToEdit.CopyToWall(cnsWallTable, true);
-        //Title = Title + " - edited wall (" + WallType.WallTypeEnumToString(_wallToEdit.WallType) +")";
-        
       }
     }
 
     private void OkClick(object sender, RoutedEventArgs e)
     {
+      cnsWallTable.CopyToWall(_wallToEdit);
       Close();
     }
 
@@ -118,6 +116,14 @@ namespace BoxCreator
       _wallToEdit.CanvasHeight = int.Parse(cnsWallTable.Parent.GetValue(ActualHeightProperty).ToString());
       _wallToEdit.CopyToWall(cnsWallTable, true);
       Title = Title + " - edited wall (" + WallType.WallTypeEnumToString(_wallToEdit.WallType) + ")";
+      foreach (ComboBoxItem cbi in cbWallColorSelection.Items)
+      {
+        if (_wallToEdit.WallColor.ToString().Substring(3, 6) == cbi.Tag.ToString().Substring(1, 6))
+        {
+          cbWallColorSelection.SelectedItem = cbi;
+          break;
+        }
+      }
 
     }
 
@@ -125,5 +131,17 @@ namespace BoxCreator
     {
       Close();
     }
+
+    private void CbWallColorSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+      ComboBox comboBox = sender as ComboBox;
+      if (comboBox != null)
+      {
+        ComboBoxItem comboBoxItem = comboBox.SelectedItem as ComboBoxItem;
+        string color = comboBoxItem.Tag.ToString();
+        cnsWallTable.WallColor = (Color)ColorConverter.ConvertFromString(color);
+      }
+    }
   }
 }
+
