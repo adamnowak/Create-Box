@@ -5,6 +5,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Xml;
 
+
+
 namespace BoxCreator
 {
   /// <summary>
@@ -12,18 +14,24 @@ namespace BoxCreator
   /// </summary>
   public class Wall : Canvas
   {
+    /// <summary>
+    /// Gap between wall and border of canvas.
+    /// </summary>
     public const int EdgeGap = 10;
-    public const int CanvasWidth = 440;
-    public const int CanvasHeight = 440;
+    //public const int CanvasWidth = 440;
+    //public const int CanvasHeight = 440;
+
+    public int CanvasWidth { get; set; }
+    public int CanvasHeight { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Wall"/> class.
     /// </summary>
     public Wall()
     {
-      Height = 440;
-      Width = 440;
-      WallColor = Colors.White;
+      //Height = CanvasHeight;
+      //Width = CanvasWidth;
+      //WallColor = ;     
       WallType = BoxCreator.WallType.WallTypeEnum.Unknown;
     }
 
@@ -59,6 +67,7 @@ namespace BoxCreator
         Background = new SolidColorBrush(_wallColor);
       }
     }
+
 
     /// <summary>
     /// Gets the type of the wall.
@@ -432,6 +441,7 @@ namespace BoxCreator
     {
       if (boxXmlElement == null) return;
       XmlElement xmlWallElement = boxXmlElement.OwnerDocument.CreateElement(WallType.ToString());
+      xmlWallElement.SetAttribute("WallColor", WallColor.ToString());
       boxXmlElement.AppendChild(xmlWallElement);
       foreach (FrameworkElement frameworkElement in Children)
       {
@@ -542,6 +552,9 @@ namespace BoxCreator
     /// <param name="xmlWallElement">The XML wall element.</param>
     public void Load(XmlElement xmlWallElement)
     {
+      string color = xmlWallElement.GetAttribute("WallColor");
+      WallColor = (Color)ColorConverter.ConvertFromString(color);
+       
       foreach (XmlElement xmlItemElement in xmlWallElement.ChildNodes)
       {
         FrameworkElement frameworkElement = null;
@@ -655,6 +668,7 @@ namespace BoxCreator
           _editableCanvas.MouseMove -= MoveMouse;
         _editableCanvas = value;
         _editableCanvas.MouseMove += MoveMouse;
+        
       }
     }
   }

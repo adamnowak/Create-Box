@@ -16,6 +16,36 @@ namespace BoxCreator
     public enum BoxTypeEnum { Open, Close, WithCover }
 
     /// <summary>
+    /// Converts int value to box type enum.
+    /// </summary>
+    /// <param name="intBoxType">Type of the int box.</param>
+    /// <returns>Open if intBoxType == 1; WithCover if intBoxType == 3; otherwise  </returns>
+    public static BoxTypeEnum IntToBoxTypeEnum(int intBoxType)
+    {
+      BoxTypeEnum result = BoxTypeEnum.Open;
+      if (intBoxType == 2)
+        result = BoxTypeEnum.Close;
+      if (intBoxType == 3)
+        result = BoxTypeEnum.WithCover;
+      return result;
+    }
+
+    /// <summary>
+    /// Convert box type enum to int.
+    /// </summary>
+    /// <param name="intBoxType">Type of the int box.</param>
+    /// <returns></returns>
+    public static int BoxTypeEnumToInt(BoxTypeEnum intBoxType)
+    {
+      int result = 1;
+      if (intBoxType == BoxTypeEnum.Close)
+        result = 2;
+      if (intBoxType == BoxTypeEnum.WithCover)
+        result = 3;
+      return result;
+    }
+
+    /// <summary>
     /// Converts box type enum to string.
     /// </summary>
     /// <param name="boxTypeEnum">The wall type enum.</param>

@@ -99,13 +99,29 @@ namespace BoxCreator
       set
       {
         _wallToEdit = value;
-        _wallToEdit.CopyToWall(cnsWallTable, true);
-        Title = Title + " - edited wall (" + WallType.WallTypeEnumToString(_wallToEdit.WallType) +")";
-        _wallToEdit.EditableCanvas = cnsWallTable;
+        //_wallToEdit.EditableCanvas = cnsWallTable;
+        //_wallToEdit.CopyToWall(cnsWallTable, true);
+        //Title = Title + " - edited wall (" + WallType.WallTypeEnumToString(_wallToEdit.WallType) +")";
+        
       }
     }
 
     private void OkClick(object sender, RoutedEventArgs e)
+    {
+      Close();
+    }
+
+    private void CnsWallTableLoaded(object sender, RoutedEventArgs e)
+    {
+      _wallToEdit.EditableCanvas = cnsWallTable;
+      _wallToEdit.CanvasWidth = int.Parse(cnsWallTable.Parent.GetValue(ActualWidthProperty).ToString());
+      _wallToEdit.CanvasHeight = int.Parse(cnsWallTable.Parent.GetValue(ActualHeightProperty).ToString());
+      _wallToEdit.CopyToWall(cnsWallTable, true);
+      Title = Title + " - edited wall (" + WallType.WallTypeEnumToString(_wallToEdit.WallType) + ")";
+
+    }
+
+    private void CancelClick(object sender, RoutedEventArgs e)
     {
       Close();
     }

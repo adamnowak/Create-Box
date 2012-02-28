@@ -20,8 +20,14 @@ namespace BoxCreator
   /// </summary>
   public partial class MainWindow : Window
   {
+    /// <summary>
+    /// Box which is displayed on this window.
+    /// </summary>
     private Box box;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MainWindow"/> class.
+    /// </summary>
     public MainWindow()
     {
       InitializeComponent();
@@ -56,7 +62,7 @@ namespace BoxCreator
       }
       if (result <= 0)
       {
-        MessageBox.Show(dimension+" musi byc wieksza od zera");
+        MessageBox.Show(dimension + " musi byc wieksza od zera");
         return false;
       }
       return true;
@@ -74,7 +80,7 @@ namespace BoxCreator
       int length = 0;
       int height = 0;
       int coverHeight = 0;
-      int tableSize = 550;
+      
 
       if (!GetParsedDimension(txtBoxWidth.Text, txtBoxWidth.Name, out width))
         return;
@@ -83,21 +89,37 @@ namespace BoxCreator
       if (!GetParsedDimension(txtBoxHeigth.Text, txtBoxHeigth.Name, out height))
         return;
       if (rbBoxWithCoverType.IsChecked.HasValue &&
-        rbBoxWithCoverType.IsChecked.Value &&
-        !GetParsedDimension(txtBoxCoverHeight.Text, txtBoxCoverHeight.Name, out coverHeight))
-        return;
-      if (coverHeight > height)
+          rbBoxWithCoverType.IsChecked.Value)
       {
-        MessageBox.Show("Wysokosc pokrywki nie moze byc wieksza niz wysokosc pudelka.");
-        return;
+        if (!GetParsedDimension(txtBoxCoverHeight.Text, txtBoxCoverHeight.Name, out coverHeight))
+        {
+          return;
+        }
+        if (coverHeight > height)
+        {
+          MessageBox.Show("Wysokosc pokrywki nie moze byc wieksza niz wysokosc pudelka.");
+          return;
+        }
       }
 
-      box.Rebuild(cnsBoxTable, width, length, height, coverHeight, 550, 550);
-      box.WallMouseButtonEventHandler = boxWall_MouseLeftButtonDown;
-      box.Show();      
+      BoxType.BoxTypeEnum boxType = BoxType.BoxTypeEnum.Open;
+      if (rbCloseBoxType.IsChecked.HasValue && rbCloseBoxType.IsChecked.Value)
+        boxType = BoxType.BoxTypeEnum.Close;
+      else
+        if (rbBoxWithCoverType.IsChecked.HasValue && rbBoxWithCoverType.IsChecked.Value)
+          boxType = BoxType.BoxTypeEnum.WithCover;
+
+      box.Rebuild(cnsBoxTable, width, length, height, coverHeight, boxType);
+      box.WallMouseButtonEventHandler = BoxWallMouseLeftButtonDown;
+      box.Show();
     }
 
-    void boxWall_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    /// <summary>
+    /// Handler for click on wall. The window for edition wall will  be opened.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="e">The <see cref="System.Windows.Input.MouseButtonEventArgs"/> instance containing the event data.</param>
+    void BoxWallMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
       Wall wallToDisplay = sender as Wall;
       if (wallToDisplay != null)
@@ -110,26 +132,36 @@ namespace BoxCreator
       }
     }
 
+    /// <summary>
+    /// Handler for click on save button. Save box to selected file.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
     private void SaveClick(object sender, RoutedEventArgs e)
     {
       SaveFileDialog sfd = new SaveFileDialog();
       sfd.Filter = "Box files (*.box)|*.box|All files (*.*)|*.*";
-      bool? b = sfd.ShowDialog();      
+      bool? b = sfd.ShowDialog();
       if (b != null && b.Value == true)
       {
         box.Save(sfd.FileName);
-      }     
+      }
     }
 
+    /// <summary>
+    /// Handler for click on open button. Open box from selected file.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
     private void OpenClick(object sender, RoutedEventArgs e)
     {
       OpenFileDialog ofd = new OpenFileDialog();
       ofd.Multiselect = false;
       ofd.Filter = "Box files (*.box)|*.box|All files (*.*)|*.*";
-      bool? b = ofd.ShowDialog();      
+      bool? b = ofd.ShowDialog();
       if (b != null && b.Value == true)
       {
-        box.WallMouseButtonEventHandler = boxWall_MouseLeftButtonDown;
+        box.WallMouseButtonEventHandler = BoxWallMouseLeftButtonDown;
         box.Load(cnsBoxTable, ofd.FileName);
         box.Show();
         txtBoxWidth.Text = box.RealWidth.ToString();
@@ -137,6 +169,17 @@ namespace BoxCreator
         txtBoxHeigth.Text = box.RealHeight.ToString();
         txtBoxCoverHeight.Text = box.RealCoverHeight.ToString();
       }
+    }
+
+    private void CnsBoxTableLoaded(object sender, RoutedEventArgs e)
+    {
+      box.MainCanvasHeight = (int)cnsBoxTable.ActualHeight;
+      box.MainCanvasWidth = (int)cnsBoxTable.ActualWidth;
+    }
+
+    private void CloseApplicationClick(object sender, RoutedEventArgs e)
+    {
+      Close();
     }
   }
 }

@@ -1,6 +1,17 @@
 ﻿<Window x:Class="BoxCreator.SketchWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:BoxCreator="clr-namespace:BoxCreator" Title="SketchWindow" Height="500" MinHeight="500" MaxHeight="500" Width="690" MinWidth="690" MaxWidth="690" Closing="Window_Closing">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:BoxCreator="clr-namespace:BoxCreator" 
+        Title="Wall editor" Height="500" MinHeight="500" MaxHeight="500" Width="690" MinWidth="690" MaxWidth="690" Closing="Window_Closing">
+    <Window.Resources>
+
+        <DataTemplate x:Key="SolidColorTemplate" DataType="{x:Type SolidColorBrush}">
+            <DockPanel Margin="1">
+                <Border Background="{Binding}" Width="15" Height="15" DockPanel.Dock="Left"/>
+                <TextBlock Text="{Binding}" Margin="5,0,0,0"/>
+            </DockPanel>
+        </DataTemplate>
+
+    </Window.Resources>
     <!--Grid - to kontrolka, ktora wyglada jak siatka (ma wiersze i kolumny)
     grid o nazwie LayoutRoot jest dzieckiem (jedynym dzieckiem okna MainWindow-->
     <Grid x:Name="gridLayoutRoot" Background="Goldenrod">
@@ -15,45 +26,53 @@
         </Grid.ColumnDefinitions>
         <!--W gridzie LayoutRoot stawiamy StackPanel (wstawiamy go do pierwszego wiersza i do pierwszej kolumny
         StackPanel to kontrolka ktora 'trzyma' swoje dzieci jeden za/pod drugim-->
-        <StackPanel x:Name="stkPnlNavigation" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Height="Auto">
+        <StackPanel x:Name="stkPnlNavigation" Grid.Row="0" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="Auto">
             <!--Do LeftPanel dodajemy button, ktorego opis bedzie Dodaj, a na jego klikniecie wywola sie metoda Button_Click-->
-            <Button Margin="10 10 10 10" Click="AddItemToSelectedElementClick">Dodaj</Button>
+            <Button Margin="10 10 10 10" Click="AddItemToSelectedElementClick" Content="Add element"></Button>
+            <TextBlock Height="23" Text="Choose color:" Margin="5,5,5,0" />
+            <ComboBox 
+                      Height="Auto" Name="cbChooseColor" Width="Auto" Margin="10,0,10,10" 
+                 ItemTemplate="{StaticResource SolidColorTemplate}" 
+                SelectedIndex="0">
+               
+                <SolidColorBrush Color="Red"/>
+                <SolidColorBrush Color="Green"/>
+                <SolidColorBrush Color="Blue"/>
+                <SolidColorBrush Color="Cyan"/>
+                <SolidColorBrush Color="Magenta"/>
+                <SolidColorBrush Color="Yellow"/>
+                <SolidColorBrush Color="Black"/>
+            </ComboBox>
             <!--Kolejnym elementem w LeftPanel bedzie TextBlock (kontrolka wypisujaca text), ktora wypisze Pozycja:-->
-            <TextBlock>Pozycja:</TextBlock>
+            <TextBlock Text="Position:" Margin="5"></TextBlock>
             <!--Trzecim elementem w LeftPanel bedzie StackPanel ktory bedzie 'trzymal/wyswietlal' swoje dzieci poziomo (domyslnie pionowo)-->
             <StackPanel Orientation="Horizontal" >
                 <!--Ten StackPanel wyswietli 2 repeatbuttony (przycisk ktory wywola metode Click wiecej niz 1 raz jesli przytrzymamy przycisk dluzej) gora i dol-->
-                <RepeatButton Width="65" Height="65" Click="MoveUp" Margin="5 0 5 5">Góra
-                </RepeatButton>
-                <RepeatButton Width="65" Height="65" Click="MoveDown" Margin="5 0 5 5">Dół
-                </RepeatButton>
+                <RepeatButton Width="80" Height="Auto" Click="MoveUp" Margin="10,5,5,5" Content="Up"></RepeatButton>
+                <RepeatButton Width="80" Height="Auto" Click="MoveDown" Margin="5" Content="Down"></RepeatButton>
             </StackPanel>
             <!--Czwartym elementem w LeftPanel bedzie StackPanel ktory bedzie 'trzymal/wyswietlal' swoje dzieci poziomo (domyslnie pionowo)-->
             <StackPanel Orientation="Horizontal" >
                 <!--Ten StackPanel wyswietli 2 repeatbuttony (przycisk ktory wywola metode Click wiecej niz 1 raz jesli przytrzymamy przycisk dluzej) lewo i prawo-->
-                <RepeatButton Width="65" Height="65" Click="MoveLeft"  Margin="5 0 5 5">Lewo
-                </RepeatButton>
-                <RepeatButton Width="65" Height="65" Click="MoveRight" Margin="5 0 5 5">Prawo
-                </RepeatButton>
+                <RepeatButton Width="80" Height="Auto" Click="MoveLeft"  Margin="10,0,5,5" Content="Left"></RepeatButton>
+                <RepeatButton Width="80" Height="Auto" Click="MoveRight" Margin="5 0 5 5" Content="Right"></RepeatButton>
             </StackPanel>
 
-            <TextBlock>Obrót:
-            </TextBlock>
+            <TextBlock Text="Turn:" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5"></TextBlock>
             <StackPanel Orientation="Horizontal" >
-                <RepeatButton Width="65" Height="65" Click="TurnLeft" Margin="5 0 5 5">Lewo
-                </RepeatButton>
-                <RepeatButton Width="65" Height="65" Click="TurnRight" Margin="5 0 5 5">Prawo
-                </RepeatButton>
+                <RepeatButton Width="80" Height="Auto" Click="TurnLeft" Margin="10,0,5,5" Content="Left"></RepeatButton>
+                <RepeatButton Width="80" Height="Auto" Click="TurnRight" Margin="5 0 5 5" Content="Right"></RepeatButton>
             </StackPanel>
-            <TextBlock>Skala:
-            </TextBlock>
+            <TextBlock Text="Scale:" Margin="5"></TextBlock>
             <StackPanel Orientation="Horizontal" >
-                <RepeatButton Width="65" Height="65" Click="Enlarge" Margin="5 0 5 5">Powiększ
-                </RepeatButton>
-                <RepeatButton Width="65" Height="65" Click="Shrink" Margin="5 0 5 5">Zmniejsz
-                </RepeatButton>
+                <RepeatButton Width="80" Height="Auto" Click="Enlarge" Margin="10,0,5,5" Content="Enlarge"></RepeatButton>
+                <RepeatButton Width="80" Height="Auto" Click="Shrink" Margin="5 0 5 5" Content="Shrink"></RepeatButton>
             </StackPanel>
-            <Button Click="OkClick">Ok</Button>
+            <StackPanel>
+                <Button Click="OkClick" Margin="10,25,10,5">Ok</Button>
+                <Button Margin="10,5" Click="CancelClick">Cancel</Button>
+            </StackPanel>
+            
         </StackPanel>
         <!--Border to klasa, ktora definiuje obramowanie dla jego dzieci
 Ten border ma sie znalexc w pierwszym (jedynym) wierszu LayoutRoot grida i w drugiej jego kolumnie-->
@@ -64,7 +83,7 @@ Ten border ma sie znalexc w pierwszym (jedynym) wierszu LayoutRoot grida i w dru
             <!--Dzieckiem border bedzie canvas (kontrolka na ktorej mozemy rysowac jak na obrazie
 Jej nazwa to 'kartka'
 To wlasnie tutaj bedziemy dodawac obrazy i textboxy-->
-            <BoxCreator:Wall VerticalAlignment="Top" HorizontalAlignment="Left" Background="Yellow"  x:Name="cnsWallTable"/>
+            <BoxCreator:Wall  VerticalAlignment="Top" HorizontalAlignment="Left" Background="Yellow"  x:Name="cnsWallTable" Loaded="CnsWallTableLoaded"  />
         </Border>
     </Grid>
 

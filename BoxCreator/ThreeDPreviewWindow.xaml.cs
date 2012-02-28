@@ -31,7 +31,10 @@ namespace BoxCreator
       set
       {
         _boxToDisplay3D = value;
-        _boxToDisplay3D.UpWall.CopyToWall(wallUp);
+        if (_boxToDisplay3D.IsRebuild)
+        {
+          _boxToDisplay3D.UpWall.CopyToWall(wallUp);
+        }
       }
     }
   }
