@@ -23,7 +23,6 @@ namespace BoxCreator
     public SketchWindow()
     {
       InitializeComponent();
-      
     }
 
 
@@ -82,7 +81,7 @@ namespace BoxCreator
     /// <param name="e">The <see cref="System.ComponentModel.CancelEventArgs"/> instance containing the event data.</param>
     private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
     {
-      Wall.CopyCanvases(editableCanvas, _wallToEdit);
+      cnsWallTable.CopyToWall(_wallToEdit);
      
     }
 
@@ -100,9 +99,9 @@ namespace BoxCreator
       set
       {
         _wallToEdit = value;
-        Wall.CopyCanvases(_wallToEdit, editableCanvas, true);
+        _wallToEdit.CopyToWall(cnsWallTable, true);
         Title = Title + " - edited wall (" + WallType.WallTypeEnumToString(_wallToEdit.WallType) +")";
-        _wallToEdit.EditableCanvas = editableCanvas;
+        _wallToEdit.EditableCanvas = cnsWallTable;
       }
     }
 

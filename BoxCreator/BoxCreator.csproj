@@ -59,6 +59,7 @@
       <DependentUpon>AddElementWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Box.cs" />
+    <Compile Include="BoxType.cs" />
     <Compile Include="WallType.cs" />
     <Compile Include="Wall.cs" />
     <Compile Include="ThreeDPreviewWindow.xaml.cs">

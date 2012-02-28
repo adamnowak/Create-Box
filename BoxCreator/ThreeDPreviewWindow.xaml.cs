@@ -13,14 +13,26 @@ using System.Windows.Shapes;
 
 namespace BoxCreator
 {
-    /// <summary>
-    /// Interaction logic for _3DPreviewWindow.xaml
-    /// </summary>
-    public partial class ThreeDPreviewWindow : Window
+  /// <summary>
+  /// Interaction logic for _3DPreviewWindow.xaml
+  /// </summary>
+  public partial class ThreeDPreviewWindow : Window
+  {
+    public ThreeDPreviewWindow()
     {
-        public ThreeDPreviewWindow()
-        {
-            InitializeComponent();
-        }
+      InitializeComponent();
     }
+
+    // http://www.codeguru.pl/baza-wiedzy/tworzenie-i-manipulacja-grafika-3d-w-wpf-cz-i---modelowanie-przestrzeni-3d,2374
+    private Box _boxToDisplay3D;
+    public Box BoxToDisplay3D
+    {
+      get { return _boxToDisplay3D; }
+      set
+      {
+        _boxToDisplay3D = value;
+        _boxToDisplay3D.UpWall.CopyToWall(wallUp);
+      }
+    }
+  }
 }

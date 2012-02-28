@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -27,12 +28,13 @@ namespace BoxCreator
     /// Gap between box and cover (if box is created with cover)
     /// </summary>
     public const int CoverGap = 15;
-
+    
     /// <summary>
     /// Initializes a new instance of the <see cref="Box"/> class.
     /// </summary>
     public Box()
     {
+      IsRebuild = false;
       UpWallColor = Colors.Yellow;
       BackWallColor = Colors.Orange;
       FrontWallColor = Colors.Beige;
@@ -89,11 +91,21 @@ namespace BoxCreator
       if (IsWithCover)
       {//with coverHeight
         widthToDisplay = (int)(4 * WallGap + 2 * EdgeGap + CoverGap + GetSizeToDisplay(2 * RealHeight + 2 * RealWidth));
-     }
+      }
 
       LeftShift = (mainCanvasHeight - lengthToDisplay) / 2;
       TopShift = (mainCanvasWidth - widthToDisplay) / 2;
+
+      IsRebuild = true;
     }
+
+    /// <summary>
+    /// Gets a value indicating whether this box is rebuild.
+    /// </summary>
+    /// <value>
+    /// 	<c>true</c> if this box was rebuild; otherwise, <c>false</c>.
+    /// </value>
+    public bool IsRebuild { get; private set; }
 
     /// <summary>
     /// Gets or sets the left shift to display box on the center of the canvas.
@@ -117,7 +129,7 @@ namespace BoxCreator
     /// Shows the box on the BoxCanvas.
     /// </summary>
     public void Show()
-    {      
+    {
       if (IsWithCover)
       {
         AddWall(UpWall, TopShift + EdgeGap, LeftShift + EdgeGap + WallGap + GetSizeToDisplay(RealHeight));
@@ -130,7 +142,7 @@ namespace BoxCreator
         AddWall(BottomWall, TopShift + EdgeGap + 2 * WallGap + GetSizeToDisplay(RealWidth + RealHeight), LeftShift + EdgeGap + WallGap + GetSizeToDisplay(RealHeight));
         AddWall(FrontWall, TopShift + EdgeGap + 3 * WallGap + GetSizeToDisplay(2 * RealWidth + RealHeight), LeftShift + EdgeGap + WallGap + GetSizeToDisplay(RealHeight));
         AddWall(LeftWall, TopShift + EdgeGap + 2 * WallGap + GetSizeToDisplay(RealWidth + RealHeight), LeftShift + EdgeGap);
-        AddWall(RightWall, TopShift + EdgeGap + 2 * WallGap + GetSizeToDisplay(RealWidth + RealHeight), LeftShift + EdgeGap + 2*WallGap + GetSizeToDisplay(RealHeight + RealLength));
+        AddWall(RightWall, TopShift + EdgeGap + 2 * WallGap + GetSizeToDisplay(RealWidth + RealHeight), LeftShift + EdgeGap + 2 * WallGap + GetSizeToDisplay(RealHeight + RealLength));
       }
     }
 
@@ -140,7 +152,7 @@ namespace BoxCreator
       Canvas.SetLeft(upWall, left);
       Canvas.SetTop(upWall, top);
       upWall.MouseLeftButtonDown += WallMouseButtonEventHandler;
-     
+
     }
 
     /// <summary>
@@ -246,14 +258,14 @@ namespace BoxCreator
     /// <param name="length">The lenght of box.</param>
     /// <param name="height">The height of box.</param>
     /// <param name="coverHeight">Height of the cover (if cover used > 0; ohterwise 0).</param>
-    /// <param name="tableSize">Size of the table where box will be shown.</param>
+    /// <param name="tableWidth">Size of the table where box will be shown.</param>
     /// <returns>
     /// Scale calculated.
     /// </returns>
     /// <remarks>
     /// To calculte is used <see cref="EdgeGap"/>, <see cref="WallGap"/> and <see cref="CoverGap"/>.
     /// </remarks>
-    private double GetScale(int width, int length, int height, int coverHeight, int tableSize = 550)
+    private double GetScale(int width, int length, int height, int coverHeight, int tableWidth = 550, int tableHeight = 550)
     {
       //scale which will be return
       double scale = 1;
@@ -275,25 +287,25 @@ namespace BoxCreator
       //scale should be used only for box not for gap!!!
       if (gapsLength + boxExpandedLength > gapsWidth + boxExpandedWidth)
       {
-        if (gapsLength + boxExpandedLength > tableSize)
+        if (gapsLength + boxExpandedLength > tableWidth)
         {
-          scale = (double)(boxExpandedLength) / (tableSize - gapsLength);
+          scale = (double)(boxExpandedLength) / (tableWidth - gapsLength);
         }
         else
         {
-          scale = (double)(tableSize - gapsLength) / (boxExpandedLength);
+          scale = (double)(tableWidth - gapsLength) / (boxExpandedLength);
         }
 
       }
       else
       {
-        if (gapsWidth + boxExpandedWidth > tableSize - gapsWidth)
+        if (gapsWidth + boxExpandedWidth > tableWidth - gapsWidth)
         {
-          scale = (double)(boxExpandedWidth) / (tableSize - gapsWidth);
+          scale = (double)(boxExpandedWidth) / (tableWidth - gapsWidth);
         }
         else
         {
-          scale = (double)(tableSize - gapsWidth) / (boxExpandedWidth);
+          scale = (double)(tableWidth - gapsWidth) / (boxExpandedWidth);
         }
 
       }
@@ -303,74 +315,93 @@ namespace BoxCreator
 
     public void Save(string path)
     {
-      XmlDocument doc = new XmlDocument();
-      XmlElement boxXmlElement = doc.CreateElement("Box");
-      boxXmlElement.SetAttribute("RealWidth", RealWidth.ToString());
-      boxXmlElement.SetAttribute("RealLength", RealLength.ToString());
-      boxXmlElement.SetAttribute("RealHeight", RealHeight.ToString());
-      boxXmlElement.SetAttribute("RealCoverHeight", RealCoverHeight.ToString());
-      doc.AppendChild(boxXmlElement);
-      
-      if (IsWithCover)
+      try
       {
-        CoverWall.Save(boxXmlElement);
-        LeftCoverWall.Save(boxXmlElement);
-        BackCoverWall.Save(boxXmlElement);
-        FrontCoverWall.Save(boxXmlElement);
-        RightCoverWall.Save(boxXmlElement);
+
+
+        XmlDocument doc = new XmlDocument();
+        XmlElement boxXmlElement = doc.CreateElement("Box");
+        boxXmlElement.SetAttribute("RealWidth", RealWidth.ToString());
+        boxXmlElement.SetAttribute("RealLength", RealLength.ToString());
+        boxXmlElement.SetAttribute("RealHeight", RealHeight.ToString());
+        boxXmlElement.SetAttribute("RealCoverHeight", RealCoverHeight.ToString());
+        doc.AppendChild(boxXmlElement);
+
+        if (IsWithCover)
+        {
+          CoverWall.Save(boxXmlElement);
+          LeftCoverWall.Save(boxXmlElement);
+          BackCoverWall.Save(boxXmlElement);
+          FrontCoverWall.Save(boxXmlElement);
+          RightCoverWall.Save(boxXmlElement);
+        }
+        else
+        {
+          UpWall.Save(boxXmlElement);
+        }
+        BottomWall.Save(boxXmlElement);
+        FrontWall.Save(boxXmlElement);
+        BackWall.Save(boxXmlElement);
+        LeftWall.Save(boxXmlElement);
+        RightWall.Save(boxXmlElement);
+
+        doc.Save(path);
       }
-      else
+      catch (Exception)
       {
-        UpWall.Save(boxXmlElement);
+
+        MessageBox.Show("Zapisanie pliku nie powiodlo sie.");
+        //TODO: powinno wywalac wyjatek
       }
-      BottomWall.Save(boxXmlElement);
-      FrontWall.Save(boxXmlElement);
-      BackWall.Save(boxXmlElement);
-      LeftWall.Save(boxXmlElement);
-      RightWall.Save(boxXmlElement);
-      
-      doc.Save(path);
     }
 
     public void Load(Canvas canvasToDisplay, string path)
     {
-      XmlDocument doc = new XmlDocument();
-      doc.Load(path);
-      if (doc.DocumentElement != null && doc.DocumentElement.Name == "Box")
+      try
       {
-        XmlElement boxXmlElement = doc.DocumentElement;
-        int realWidth = int.Parse(boxXmlElement.GetAttribute("RealWidth"));
-        int realLength = int.Parse(boxXmlElement.GetAttribute("RealLength"));
-        int realHeight = int.Parse(boxXmlElement.GetAttribute("RealHeight"));
-        int realCoverHeight = int.Parse(boxXmlElement.GetAttribute("RealCoverHeight"));
-        Rebuild(canvasToDisplay, realWidth, realLength, realHeight, realCoverHeight, 550, 550);
-
-
-        foreach (XmlElement xmlWallElement in boxXmlElement.ChildNodes)
+        XmlDocument doc = new XmlDocument();
+        doc.Load(path);
+        if (doc.DocumentElement != null && doc.DocumentElement.Name == "Box")
         {
-          switch (xmlWallElement.Name )
+          XmlElement boxXmlElement = doc.DocumentElement;
+          int realWidth = int.Parse(boxXmlElement.GetAttribute("RealWidth"));
+          int realLength = int.Parse(boxXmlElement.GetAttribute("RealLength"));
+          int realHeight = int.Parse(boxXmlElement.GetAttribute("RealHeight"));
+          int realCoverHeight = int.Parse(boxXmlElement.GetAttribute("RealCoverHeight"));
+          Rebuild(canvasToDisplay, realWidth, realLength, realHeight, realCoverHeight, 550, 550);
+
+
+          foreach (XmlElement xmlWallElement in boxXmlElement.ChildNodes)
           {
-            case "Up":
-              UpWall.Load(xmlWallElement);
-              break;
-            case "Bottom":
-              BottomWall.Load(xmlWallElement);
-              break;
-            case "Front":
-              FrontWall.Load(xmlWallElement);
-              break;
-            case "Back":
-              BackWall.Load(xmlWallElement);
-              break;
-            case "Left":
-              LeftWall.Load(xmlWallElement);
-              break;
-            case "Right":
-              RightWall.Load(xmlWallElement);
-              break;
-            //TODO: with cover
+            switch (xmlWallElement.Name)
+            {
+              case "Up":
+                UpWall.Load(xmlWallElement);
+                break;
+              case "Bottom":
+                BottomWall.Load(xmlWallElement);
+                break;
+              case "Front":
+                FrontWall.Load(xmlWallElement);
+                break;
+              case "Back":
+                BackWall.Load(xmlWallElement);
+                break;
+              case "Left":
+                LeftWall.Load(xmlWallElement);
+                break;
+              case "Right":
+                RightWall.Load(xmlWallElement);
+                break;
+              //TODO: with cover
+            }
           }
         }
+      }
+      catch (Exception)
+      {
+        MessageBox.Show("Wczytanie pliku nie powiodlo się.");
+        //TODO: powinno wywalac wyjatek
       }
     }
   }

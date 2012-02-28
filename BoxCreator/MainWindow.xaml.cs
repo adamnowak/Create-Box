@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Win32;
 
 namespace BoxCreator
 {
@@ -32,9 +33,10 @@ namespace BoxCreator
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
-    private void Preview_Click(object sender, RoutedEventArgs e)
+    private void PreviewClick(object sender, RoutedEventArgs e)
     {
       ThreeDPreviewWindow preview = new ThreeDPreviewWindow();
+      preview.BoxToDisplay3D = box;
       preview.ShowDialog();
     }
 
@@ -66,7 +68,7 @@ namespace BoxCreator
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
     /// <remarks>This funciton will rebuild the box.</remarks>
-    private void Reset_Click(object sender, RoutedEventArgs e)
+    private void ResetClick(object sender, RoutedEventArgs e)
     {
       int width = 0;
       int length = 0;
@@ -74,15 +76,15 @@ namespace BoxCreator
       int coverHeight = 0;
       int tableSize = 550;
 
-      if (!GetParsedDimension(widthTextBox.Text, widthTextBox.Name, out width))
+      if (!GetParsedDimension(txtBoxWidth.Text, txtBoxWidth.Name, out width))
         return;
-      if (!GetParsedDimension(lengthTextBox.Text, lengthTextBox.Name, out length))
+      if (!GetParsedDimension(txtBoxLength.Text, txtBoxLength.Name, out length))
         return;
-      if (!GetParsedDimension(heigthTextBox.Text, heigthTextBox.Name, out height))
+      if (!GetParsedDimension(txtBoxHeigth.Text, txtBoxHeigth.Name, out height))
         return;
-      if (cbWithCover.IsChecked.HasValue && 
-        cbWithCover.IsChecked.Value &&
-        !GetParsedDimension(coverHeightTextBox.Text, coverHeightTextBox.Name, out coverHeight))
+      if (rbBoxWithCoverType.IsChecked.HasValue &&
+        rbBoxWithCoverType.IsChecked.Value &&
+        !GetParsedDimension(txtBoxCoverHeight.Text, txtBoxCoverHeight.Name, out coverHeight))
         return;
       if (coverHeight > height)
       {
@@ -90,7 +92,7 @@ namespace BoxCreator
         return;
       }
 
-      box.Rebuild(Table, width, length, height, coverHeight, 550, 550);
+      box.Rebuild(cnsBoxTable, width, length, height, coverHeight, 550, 550);
       box.WallMouseButtonEventHandler = boxWall_MouseLeftButtonDown;
       box.Show();      
     }
@@ -110,20 +112,31 @@ namespace BoxCreator
 
     private void SaveClick(object sender, RoutedEventArgs e)
     {
-      box.Save("test.xml");
+      SaveFileDialog sfd = new SaveFileDialog();
+      sfd.Filter = "Box files (*.box)|*.box|All files (*.*)|*.*";
+      bool? b = sfd.ShowDialog();      
+      if (b != null && b.Value == true)
+      {
+        box.Save(sfd.FileName);
+      }     
     }
 
     private void OpenClick(object sender, RoutedEventArgs e)
     {
-      box.WallMouseButtonEventHandler = boxWall_MouseLeftButtonDown;
-      box.Load(Table, "test.xml");
-      box.Show();
-
-      widthTextBox.Text = box.RealWidth.ToString();
-      lengthTextBox.Text = box.RealLength.ToString();
-      heigthTextBox.Text = box.RealHeight.ToString();
-      coverHeightTextBox.Text = box.RealCoverHeight.ToString();
-
+      OpenFileDialog ofd = new OpenFileDialog();
+      ofd.Multiselect = false;
+      ofd.Filter = "Box files (*.box)|*.box|All files (*.*)|*.*";
+      bool? b = ofd.ShowDialog();      
+      if (b != null && b.Value == true)
+      {
+        box.WallMouseButtonEventHandler = boxWall_MouseLeftButtonDown;
+        box.Load(cnsBoxTable, ofd.FileName);
+        box.Show();
+        txtBoxWidth.Text = box.RealWidth.ToString();
+        txtBoxLength.Text = box.RealLength.ToString();
+        txtBoxHeigth.Text = box.RealHeight.ToString();
+        txtBoxCoverHeight.Text = box.RealCoverHeight.ToString();
+      }
     }
   }
 }

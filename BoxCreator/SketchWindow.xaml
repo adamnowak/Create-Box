@@ -1,10 +1,9 @@
 ﻿<Window x:Class="BoxCreator.SketchWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="SketchWindow" Height="500" MinHeight="500" MaxHeight="500" Width="690" MinWidth="690" MaxWidth="690" Closing="Window_Closing">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:BoxCreator="clr-namespace:BoxCreator" Title="SketchWindow" Height="500" MinHeight="500" MaxHeight="500" Width="690" MinWidth="690" MaxWidth="690" Closing="Window_Closing">
     <!--Grid - to kontrolka, ktora wyglada jak siatka (ma wiersze i kolumny)
     grid o nazwie LayoutRoot jest dzieckiem (jedynym dzieckiem okna MainWindow-->
-    <Grid x:Name="LayoutRoot" Background="Goldenrod">
+    <Grid x:Name="gridLayoutRoot" Background="Goldenrod">
         <!--Definiujemy, ze grid LayoutRoot ma miec jeden row-->
         <Grid.RowDefinitions>
             <RowDefinition Height="450" />
@@ -16,7 +15,7 @@
         </Grid.ColumnDefinitions>
         <!--W gridzie LayoutRoot stawiamy StackPanel (wstawiamy go do pierwszego wiersza i do pierwszej kolumny
         StackPanel to kontrolka ktora 'trzyma' swoje dzieci jeden za/pod drugim-->
-        <StackPanel x:Name="LeftPanel" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Height="Auto">
+        <StackPanel x:Name="stkPnlNavigation" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Height="Auto">
             <!--Do LeftPanel dodajemy button, ktorego opis bedzie Dodaj, a na jego klikniecie wywola sie metoda Button_Click-->
             <Button Margin="10 10 10 10" Click="AddItemToSelectedElementClick">Dodaj</Button>
             <!--Kolejnym elementem w LeftPanel bedzie TextBlock (kontrolka wypisujaca text), ktora wypisze Pozycja:-->
@@ -65,7 +64,7 @@ Ten border ma sie znalexc w pierwszym (jedynym) wierszu LayoutRoot grida i w dru
             <!--Dzieckiem border bedzie canvas (kontrolka na ktorej mozemy rysowac jak na obrazie
 Jej nazwa to 'kartka'
 To wlasnie tutaj bedziemy dodawac obrazy i textboxy-->
-            <Canvas VerticalAlignment="Top" HorizontalAlignment="Left" Background="Yellow"  Name="editableCanvas"/>
+            <BoxCreator:Wall VerticalAlignment="Top" HorizontalAlignment="Left" Background="Yellow"  x:Name="cnsWallTable"/>
         </Border>
     </Grid>
 

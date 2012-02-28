@@ -13,7 +13,7 @@ namespace BoxCreator
     /// <summary>
     /// Types of walls
     /// </summary> 
-    public enum WallTypeEnum { Front, Left, Bottom, Right, Back, Up, Cover, FrontCover, BackCover, LeftCover, RightCover }
+    public enum WallTypeEnum { Front, Left, Bottom, Right, Back, Up, Cover, FrontCover, BackCover, LeftCover, RightCover, Unknown }
 
     /// <summary>
     /// Converts wall type enum to string.
