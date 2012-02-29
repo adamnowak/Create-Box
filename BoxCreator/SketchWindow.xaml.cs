@@ -124,6 +124,7 @@ namespace BoxCreator
           break;
         }
       }
+      _wallToEdit.CleanTransforms();
 
     }
 
