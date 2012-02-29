@@ -42,19 +42,12 @@ namespace BoxCreator
     {
       if (tabContItemSelector.SelectedItem == tabItemText)
       {
-        TextBlock tb = new TextBlock();
-        tb.Text = txtBoxTextToInsert.Text;
-        Element = tb;
+        string color = ((ComboBoxItem)cbFontColorSelection.SelectedItem).Tag.ToString();
+        Element = Wall.CreateTextBlock(txtBoxTextToInsert.Text, new SolidColorBrush((Color)ColorConverter.ConvertFromString(color)));
       }
       if (tabContItemSelector.SelectedItem == tabItemImage)
       {
-        Image img = new Image();
-        ImageSourceConverter converter = new ImageSourceConverter();
-        img.Source = (ImageSource)converter.ConvertFromString(txtBoxImagePath.Text);
-        img.Width = 60;
-        img.Height = 30;
-        img.Tag = txtBoxImagePath.Text;
-        Element = img;
+        Element = Wall.CreateImage(txtBoxImagePath.Text);
       }
       Close();
     }

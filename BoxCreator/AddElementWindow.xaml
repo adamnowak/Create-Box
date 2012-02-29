@@ -12,7 +12,26 @@
                 <Grid>
                     <StackPanel Grid.Row="0">
                         <TextBlock>Input text:</TextBlock>
-                        <TextBox VerticalAlignment="Top"  Height="20" Name="txtBoxTextToInsert"></TextBox>    
+                        <TextBox VerticalAlignment="Top"  Height="20" Name="txtBoxTextToInsert"></TextBox>
+                        <TextBlock Height="23" Text="Choose font color:" Margin="5,5,5,0" />
+                        <ComboBox Name="cbFontColorSelection" SelectedIndex="1">
+                            <ComboBoxItem Content="Aqua" Tag="#FF00FFFF" />
+                            <ComboBoxItem Content="Black" Tag="#FF000000" />
+                            <ComboBoxItem Content="Blue" Tag="#FF0000FF" />
+                            <ComboBoxItem Content="Fuchsia" Tag="#FFFF00FF" />
+                            <!--<ComboBoxItem Content="Gray" Tag="#FF808080" />-->
+                            <ComboBoxItem Content="Green" Tag="#FF008000" />
+                            <ComboBoxItem Content="Lime" Tag="#FF00FF00" />
+                            <ComboBoxItem Content="Maroon" Tag="#FF800000" />
+                            <ComboBoxItem Content="Navy" Tag="#FF000080" />
+                            <ComboBoxItem Content="Olive" Tag="#FF808000" />
+                            <ComboBoxItem Content="Purple" Tag="#FF800080" />
+                            <ComboBoxItem Content="Red" Tag="#FFFF0000" />
+                            <ComboBoxItem Content="Silver" Tag="#FFC0C0C0" />
+                            <ComboBoxItem Content="Teal" Tag="#FF008080" />
+                            <ComboBoxItem Content="White" Tag="#FFFFFFFF" />
+                            <ComboBoxItem Content="Yellow" Tag="#FFFFFF00" />
+                        </ComboBox>
                     </StackPanel>
                 </Grid>
             </TabItem>

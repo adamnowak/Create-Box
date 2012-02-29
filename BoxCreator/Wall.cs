@@ -95,7 +95,7 @@ namespace BoxCreator
 
         if (sourceFrameworkElement is TextBlock)
         {
-          frameworkElement = CreateTextBlock(((TextBlock)sourceFrameworkElement).Text);
+          frameworkElement = CreateTextBlock(((TextBlock)sourceFrameworkElement).Text, ((TextBlock)sourceFrameworkElement).Foreground);
         }
 
         if (sourceFrameworkElement is Image)
@@ -152,11 +152,16 @@ namespace BoxCreator
     /// Creates the text block with given text.
     /// </summary>
     /// <param name="text">The text which will be set as Text property in creating TextBlock.</param>
-    /// <returns>Created TextBlock.</returns>
-    public static TextBlock CreateTextBlock(string text)
-    {
+    /// <param name="fontColor">Color of the font.</param>
+    /// <returns>
+    /// Created TextBlock.
+    /// </returns>
+    /// 
+    public static TextBlock CreateTextBlock(string text, Brush fontBrush)
+    {      
       TextBlock textBlock = new TextBlock();
       textBlock.Text = text;
+      textBlock.Foreground = fontBrush;
       return textBlock;
     }
 
@@ -463,6 +468,7 @@ namespace BoxCreator
         xmlItemElement = xmlWallElement.OwnerDocument.CreateElement("Text");
         xmlWallElement.AppendChild(xmlItemElement);
         xmlItemElement.SetAttribute("Text", textBlock.Text);
+        xmlItemElement.SetAttribute("TextColor", ((SolidColorBrush)textBlock.Foreground).Color.ToString());
 
       }
       if (frameworkElement is Image)
@@ -560,7 +566,8 @@ namespace BoxCreator
         switch (xmlItemElement.Name)
         {
           case "Text":
-            frameworkElement = CreateTextBlock(xmlItemElement.GetAttribute("Text"));
+            frameworkElement = CreateTextBlock(xmlItemElement.GetAttribute("Text"), 
+              new SolidColorBrush((Color)ColorConverter.ConvertFromString(xmlItemElement.GetAttribute("TextColor"))));
             break;
           case "Image":
             frameworkElement = CreateImage(xmlItemElement.GetAttribute("ImagePath"));
