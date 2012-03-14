@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Box Creator" Height="600" Width="800">
-    <Grid x:Name="gridLayoutRoot" Background="red">
+    <Grid x:Name="gridLayoutRoot" Background="Gainsboro">
         
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -14,24 +14,154 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Column="0">
-            <Button Margin="10" Name="btnOpen" Click="OpenClick">Open</Button>
-            <Button Margin="10" Name="btnSave" Click="SaveClick">Save</Button>
-            <Label>Length</Label>
-            <TextBox Name="txtBoxLength" Margin="10">20</TextBox>
-            <Label>Width</Label>
-            <TextBox Name="txtBoxWidth">30</TextBox>
-            <Label Margin="10,0,0,0">Heigth</Label>
-            <TextBox Margin="10,0" Name="txtBoxHeigth">25</TextBox>            
-            <RadioButton GroupName="BoxType" Content="Open box" Height="16" Name="rbOpenBoxType"  IsChecked="True" />
-            <RadioButton GroupName="BoxType" Content="Close box" Height="16" Name="rbCloseBoxType" />
-            <RadioButton GroupName="BoxType" Content="Box with cover" Height="16" Name="rbBoxWithCoverType" />
-            <Label Margin="10,0,0,0">Cover Height</Label>
-            <TextBox Margin="10" Name="txtBoxCoverHeight" IsEnabled="{Binding ElementName=rbBoxWithCoverType, Path=IsChecked}">5</TextBox>
-            <Button Margin="10" Name="btnReset" Click="ResetClick">Reset</Button>
-            <Button Margin="20" Name="btnPreview" Click="PreviewClick">3D Preview</Button>
-            <Button Content="Close application" Height="19" Name="button1" Width="171" Click="CloseApplicationClick" />
+            <Button Margin="10,10,10,0" 
+                    Name="btnOpen" 
+                    Click="OpenClick" 
+                    FontFamily="Elephant" 
+                    FontSize="17">
+                Open Project
+            </Button>
+            <Label 
+                Margin="9,8,9,0" 
+                FontStyle="Oblique" 
+                FontWeight="DemiBold" 
+                FontFamily="Kristen ITC" 
+                FontSize="15" 
+                HorizontalAlignment="Center">
+                Or - start a new one... 
+            </Label>
+            <Label 
+                Margin="5,0,4,0" 
+                FontFamily="Kristen ITC" 
+                FontSize="13">
+                Choose the type of your box
+            </Label>
+            <RadioButton 
+                GroupName="BoxType" 
+                Content="Open box"  
+                Name="rbOpenBoxType"  
+                IsChecked="True" 
+                Margin="10,5,10,0" 
+                FontSize="14" 
+                FontFamily="Kristen ITC"/>
+            <RadioButton 
+                GroupName="BoxType" 
+                Content="Closed box" 
+                Name="rbCloseBoxType" 
+                Margin="10,5,10,0" 
+                FontSize="14" 
+                FontFamily="Kristen ITC"/>
+            <RadioButton 
+                GroupName="BoxType" 
+                Content="Box with cover" 
+                Name="rbBoxWithCoverType" 
+                Margin="10,5,10,0" 
+                FontSize="14" 
+                FontFamily="Kristen ITC"/>
+            <Label 
+                HorizontalAlignment="Center"
+                Margin="10,8,10,0" 
+                FontSize="14" 
+                FontFamily="Kristen ITC">
+                Length:
+            </Label>
+            <TextBox 
+                HorizontalAlignment="Center"
+                Name="txtBoxLength" 
+                Width="80"
+                FontFamily="Kristen ITC" 
+                FontSize="12" 
+                Background="Transparent"
+                TextAlignment="Center">
+                20
+            </TextBox>
+            <Label 
+                HorizontalAlignment="Center"
+                Margin="10,0,10,0" 
+                FontSize="14" 
+                FontFamily="Kristen ITC">
+                Width:
+            </Label>
+            <TextBox 
+                Name="txtBoxWidth" 
+                HorizontalAlignment="Center"
+                Width="80"
+                FontFamily="Kristen ITC" 
+                FontSize="12" 
+                Background="Transparent"
+                TextAlignment="Center">
+                30
+            </TextBox>
+            <Label 
+                HorizontalAlignment="Center"
+                FontSize="14" 
+                FontFamily="Kristen ITC">
+                Heigth:
+            </Label>
+            <TextBox 
+                Name="txtBoxHeigth" 
+                HorizontalAlignment="Center"
+                Width="80"
+                FontFamily="Kristen ITC" 
+                FontSize="12" 
+                Background="Transparent"
+                TextAlignment="Center">
+                25
+            </TextBox>
+            <Label 
+                HorizontalAlignment="Center"
+                FontSize="14" 
+                FontFamily="Kristen ITC">
+                Cover Height:
+            </Label>
+            <TextBox 
+                FontFamily="Kristen ITC" 
+                FontSize="12" 
+                Name="txtBoxCoverHeight" 
+                IsEnabled="{Binding 
+                ElementName=rbBoxWithCoverType, 
+                Path=IsChecked}"
+                HorizontalAlignment="Center"
+                Width="80"
+                TextAlignment="Center">
+                5
+            </TextBox>
+            <Button 
+                Margin="10,13,10,0" 
+                Name="btnReset" 
+                Click="ResetClick" 
+                FontFamily="Elephant" 
+                FontSize="17">
+                Design your box
+            </Button>
+            <Button 
+                Margin="10,5,10,0" 
+                Name="btnPreview" 
+                Click="PreviewClick" 
+                FontFamily="Elephant" 
+                FontSize="17">
+                3D Preview
+            </Button>
+            <Button 
+                Margin="10,20,10,0" 
+                Name="btnSave" 
+                Click="SaveClick" 
+                FontFamily="Elephant" 
+                FontSize="17">
+                Save Project
+            </Button>
+            <Button 
+                Margin="10,5,10,0" 
+                Content="Close application" 
+                Name="button1" 
+                Click="CloseApplicationClick" 
+                FontFamily="Elephant" 
+                FontSize="17"/>
         </StackPanel>
-        <Canvas Grid.Column="1" Background="Gray" Name="cnsBoxTable" Loaded="CnsBoxTableLoaded">
+        <Canvas Grid.Column="1" 
+                Background="Transparent" 
+                Name="cnsBoxTable" 
+                Loaded="CnsBoxTableLoaded">
             <!--<Canvas Height="20" Width="30" Background="Green"></Canvas>-->
         </Canvas>
     </Grid>
