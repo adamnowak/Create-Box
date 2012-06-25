@@ -19,8 +19,8 @@
     <HtmlHelpName>Documentation</HtmlHelpName>
     <Language>en-US</Language>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\BoxCreator\bin\Debug\BoxCreator.exe" xmlns="" />
-    </DocumentationSources>
+      <DocumentationSource sourceFile="..\BoxCreator\bin\Debug\BoxCreator.exe" />
+<DocumentationSource sourceFile="..\BoxCreator\bin\Debug\BoxCreator.XML" /></DocumentationSources>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional

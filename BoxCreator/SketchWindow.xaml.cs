@@ -87,44 +87,36 @@ namespace BoxCreator
     }
 
 
-    private Wall _wallToEdit;
     /// <summary>
     /// Gets or sets the wall which will be displayed on sketch window. This wall can be modified.
     /// </summary>
     /// <value>
     /// The wall to edit.
     /// </value>
-    public Wall WallToEdit
-    {
-      get { return _wallToEdit; }
-      set
-      {
-        _wallToEdit = value;
-      }
-    }
+    public Wall WallToEdit { get; set; }
 
     private void OkClick(object sender, RoutedEventArgs e)
     {
-      cnsWallTable.CopyToWall(_wallToEdit);
+      cnsWallTable.CopyToWall(WallToEdit);
       Close();
     }
 
     private void CnsWallTableLoaded(object sender, RoutedEventArgs e)
     {
-      _wallToEdit.EditableCanvas = cnsWallTable;
-      _wallToEdit.CanvasWidth = int.Parse(cnsWallTable.Parent.GetValue(ActualWidthProperty).ToString());
-      _wallToEdit.CanvasHeight = int.Parse(cnsWallTable.Parent.GetValue(ActualHeightProperty).ToString());
-      _wallToEdit.CopyToWall(cnsWallTable, true);
-      Title = Title + " - edited wall (" + WallType.WallTypeEnumToString(_wallToEdit.WallType) + ")";
+      WallToEdit.EditableCanvas = cnsWallTable;
+      WallToEdit.CanvasWidth = int.Parse(cnsWallTable.Parent.GetValue(ActualWidthProperty).ToString());
+      WallToEdit.CanvasHeight = int.Parse(cnsWallTable.Parent.GetValue(ActualHeightProperty).ToString());
+      WallToEdit.CopyToWall(cnsWallTable, true);
+      Title = Title + " - edited wall (" + WallType.WallTypeEnumToString(WallToEdit.WallType) + ")";
       foreach (ComboBoxItem cbi in cbWallColorSelection.Items)
       {
-        if (_wallToEdit.WallColor.ToString() == cbi.Tag.ToString())
+        if (WallToEdit.WallColor.ToString() == cbi.Tag.ToString())
         {
           cbWallColorSelection.SelectedItem = cbi;
           break;
         }
       }
-      _wallToEdit.CleanTransforms();
+      WallToEdit.CleanTransforms();
 
     }
 
